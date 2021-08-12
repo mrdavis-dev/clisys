@@ -2,7 +2,7 @@
 error_reporting(0);
 //fetch.php
 // include("conexion/config.php");
-$connect = mysqli_connect("localhost", "root", "", "clinica");
+$connect = mysqli_connect("bzdn50to3so8prnjpujr-mysql.services.clever-cloud.com", "uqgyrddpxhn98ej9", "Gh5qkUyym8XWgyWNQbah", "bzdn50to3so8prnjpujr");
 $output = '';
 if(isset($_POST["query"]))
 {
