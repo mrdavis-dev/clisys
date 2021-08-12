@@ -55,7 +55,7 @@ include("menu.php");
 							<h1 class="p-1 ">Próximas citas</h1>
 							<div class="container-fluid centrar" >
 							<?php
-							$dbc = mysqli_connect('localhost','root','','clinica')
+							$dbc = mysqli_connect("bzdn50to3so8prnjpujr-mysql.services.clever-cloud.com", "uqgyrddpxhn98ej9", "Gh5qkUyym8XWgyWNQbah", "bzdn50to3so8prnjpujr")
 							or die('Error connecting to MySQL server');
 							$query = "select * from citas_tabla";
 							$result = mysqli_query($dbc,$query)
