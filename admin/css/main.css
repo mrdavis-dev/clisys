@@ -1,0 +1,27 @@
+:root{
+    --color-1:rgb(92, 182, 172);
+    --color-2:#8B8B8B;
+    --color-3:#d4d4d4;
+}
+
+.centrar{
+    text-align: center;
+}
+
+.sombra{
+    box-shadow: 7px 7px 6px -5px rgba(0,0,0,0.75);
+}
+
+.titulo::after{
+    background-image: url("../img/logo-bw.png");
+}
+
+.numbers{
+    margin-right: 16px;
+    margin-left: 16px;
+}
+.numbers2{
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
