@@ -8,7 +8,7 @@
         	</div>
 			<div class="p-4">
 				<img src="" alt="">
-		  		<h1 style="font-size: calc(20px + 1.1vw);" class="border-bottom"><a href="index.php" class="logo">Clisys</a></h1>
+		  		<h1 style="font-size: calc(20px + 1.1vw);" class="border-bottom"><a href="index.php" class="logo">Clínica Anguizola</a></h1>
 	       	<ul class="list-unstyled components mb-5">
 				<li >
 					<a href="inicio.php"><span class="fa fa-home mr-3"></span> Inicio</a>

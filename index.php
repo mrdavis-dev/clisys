@@ -16,18 +16,18 @@
 
         <div class="container text-center">
         
-            <img src="img/tulogo.png" style="width: 250px" alt="">
+        <p class="display-4 fw-bold mt-5" style="color: #808080;"> Clínica Anguizola <img src="img/logo-color.png" width="50px" height="50px" alt=""></p>
 
             <div class="mt-3 mb-5">
             <h4>Agenda una cita con nosotros</h4>
-            <p>"visitanos tambien en nustras redes sociales"</p>
-              <a href="https://www.facebook.com/clinicadentalanguizola/"><img style="width:30px" src="https://img.icons8.com/nolan/64/facebook.png"></a>
-              <a href="https://www.instagram.com/Clinicadentalanguizola2/"><img style="width:30px" src="https://img.icons8.com/nolan/64/instagram-new.png"></a>
+            <p>"visitanos también en nustras redes sociales"</p>
+              <a href="https://www.facebook.com/clinicadentalanguizola/"><img  src="https://img.icons8.com/color/48/000000/facebook.png"></a>
+              <a href="https://www.instagram.com/Clinicadentalanguizola2/"><img  src="https://img.icons8.com/fluency/48/000000/instagram-new.png"></a>
             </div>
 
-                <form action="insert_exterior.php" method="POST">
+            <form action="insert_exterior.php" method="POST">
                     
-                        <div class="container mx-auto w-75 mb-4">
+                        <div class="container mx-auto w-100 ps-5 pe-5 mb-4">
                             <label for="fecha">Fecha de cita:</label>
                             <input type="date" class="mb-1 form-control border border-primary" placeholder="" name="fecha">
 
@@ -49,7 +49,7 @@
                             </select>
                         </div>
                     
-                        <input type="submit" class="btn btn-primary mb-5" name="" value="Enviar">
+                        <input type="submit" class="btn mb-5 text-light" style="width: 150px; background-color: #229b94;" name="" value="Enviar">
                 </form>
             
         </div>
