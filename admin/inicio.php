@@ -11,7 +11,7 @@ if (!isset($_SESSION['loggedin'])) {
 
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +39,7 @@ include("menu.php");
 						<div class="container centrado">
 							<div class="centrar animated fadeIn slow container border-bottom  m-2">
 
-								<p class="display-4"> Clínica  </p>
+								<p class="display-4"><img src="img/logo-color.png" style="width: 50px"> Clínica Anguizola </p>
 
 							</div>
 							<div class="centrar">
@@ -55,7 +55,7 @@ include("menu.php");
 							<h1 class="p-1 ">Próximas citas</h1>
 							<div class="container-fluid centrar" >
 							<?php
-							$dbc = mysqli_connect("bzdn50to3so8prnjpujr-mysql.services.clever-cloud.com", "uqgyrddpxhn98ej9", "Gh5qkUyym8XWgyWNQbah", "bzdn50to3so8prnjpujr")
+							$dbc = mysqli_connect("172.17.0.7", "root", "#dbcontainer.com", "anguizola")
 							or die('Error connecting to MySQL server');
 							$query = "select * from citas_tabla";
 							$result = mysqli_query($dbc,$query)
@@ -310,9 +310,9 @@ include("menu.php");
             <label for="">Doctor de preferencia</label>
             <select name="doctor" required class="form-control" id="">
                 <option value="">Seleccione un Doctor...</option>
-                <option value="Dr. Júlio Anguizola Vial">Dr. Júlio </option>
-                <option value="Dr. Miguel Anguizola Severino">Dr. Miguel </option>
-                <option value="Dr. Amira Martínez de Anguizola">Dr. Alex </option>
+                <option value="Dr. Júlio Anguizola Vial">Dr. Júlio Anguizola Vial</option>
+                <option value="Dr. Miguel Anguizola Severino">Dr. Miguel Anguizola Severino</option>
+                <option value="Dr. Amira Martínez de Anguizola">Dr. Amira Martínez de Anguizola</option>
             </select>
 					  </div>
 					</div>

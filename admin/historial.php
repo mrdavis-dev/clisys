@@ -61,16 +61,7 @@ if (!isset($_SESSION['loggedin'])) {
 			<?php
           include "conexion/config.php";
 
-          // Check user login or not
-          if(!isset($_SESSION['uname'])){
-              // header('Location: index.php');
-          }
-
-          // logout
-          if(isset($_POST['but_logout'])){
-              session_destroy();
-              header('Location: index.php');
-          }
+        
           ?>
           <form method='post' action="">
             <input style="margin-top:25px" class="btn btn-danger" type="submit" value="Cerrar Sesion" name="but_logout">
