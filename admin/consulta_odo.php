@@ -2,23 +2,19 @@
 error_reporting(0);
 //fetch.php
 // include("conexion/config.php");
-$db = mysqli_connect("172.17.0.5", "userroot", "#dbcontainer.com", "anguizola");
+$db = mysqli_connect("172.17.0.9", "userroot", "#dbcontainer.com", "anguizola");
 $output = '';
 $output2 = '';
-if(isset($_POST["query"]))
-{
- $search = mysqli_real_escape_string($db, $_POST["query"]);
- $query = "SELECT * FROM pacientes WHERE cedula LIKE '%".$search."%'";
- // $query = " SELECT cedula FROM pacientes, consulta WHERE pacientes.cedula=consulta.cedula LIKE '%".$search."%' ";
-}
-else
-{
- // $query = "SELECT * FROM paciente";
+if (isset($_POST["query"])) {
+   $search = mysqli_real_escape_string($db, $_POST["query"]);
+   $query = "SELECT * FROM pacientes WHERE cedula LIKE '%" . $search . "%'";
+   // $query = " SELECT cedula FROM pacientes, consulta WHERE pacientes.cedula=consulta.cedula LIKE '%".$search."%' ";
+} else {
+   // $query = "SELECT * FROM paciente";
 }
 $result = mysqli_query($db, $query);
-if(mysqli_num_rows($result) > 0)
-{
- $output .= '
+if (mysqli_num_rows($result) > 0) {
+   $output .= '
   <div class="table-responsive">
    <table class="table table bordered">
     <tr>
@@ -40,51 +36,43 @@ if(mysqli_num_rows($result) > 0)
     <th>Tiene un mal habito</th>
     </tr>
  ';
- while($row = mysqli_fetch_array($result))
- {
-  $output .= '
+   while ($row = mysqli_fetch_array($result)) {
+      $output .= '
    <tr>
-    <td>'.$row["nombre"].'</td>
-    <td>'.$row["cedula"].'</td>
-    <td>'.$row["apellido"].'</td>
-    <td>'.$row["edad"].'</td>
-    <td>'.$row["motivo_consuta"].'</td>
-    <td>'.$row["habitos_higienicos"].'</td>
-    <td>'.$row["esta_bajo_tratamiento_actualmente"].'</td>
-    <td>'.$row["Ha_sido_hospitalizado_quirurgicamente"].'</td>
-    <td>'.$row["esta_tomando_algun_medicamento_o_droga"].'</td>
-    <td>'.$row["presenta_algun_tipo_de_alergia"].'</td>
-    <td>'.$row["Ha_tenido_algun_tipo_de_enfermedad_cardiaca"].'</td>
-    <td>'.$row["Es_usted_diabetico_"].'</td>
-    <td>'.$row["Ha_tenido_tuberculosis_o_hepatitis"].'</td>
-    <td>'.$row["Ha_presentado_alteraciones_en_el_sangrado"].'</td>
-    <td>'.$row["Ha_tenido_alguna_enfermedad_de_transmision_sexual"].'</td>
-    <td>'.$row["Tiene_algun_tipo_de_mal_habito"].'</td>
+    <td>' . $row["nombre"] . '</td>
+    <td>' . $row["cedula"] . '</td>
+    <td>' . $row["apellido"] . '</td>
+    <td>' . $row["edad"] . '</td>
+    <td>' . $row["motivo_consuta"] . '</td>
+    <td>' . $row["habitos_higienicos"] . '</td>
+    <td>' . $row["esta_bajo_tratamiento_actualmente"] . '</td>
+    <td>' . $row["Ha_sido_hospitalizado_quirurgicamente"] . '</td>
+    <td>' . $row["esta_tomando_algun_medicamento_o_droga"] . '</td>
+    <td>' . $row["presenta_algun_tipo_de_alergia"] . '</td>
+    <td>' . $row["Ha_tenido_algun_tipo_de_enfermedad_cardiaca"] . '</td>
+    <td>' . $row["Es_usted_diabetico_"] . '</td>
+    <td>' . $row["Ha_tenido_tuberculosis_o_hepatitis"] . '</td>
+    <td>' . $row["Ha_presentado_alteraciones_en_el_sangrado"] . '</td>
+    <td>' . $row["Ha_tenido_alguna_enfermedad_de_transmision_sexual"] . '</td>
+    <td>' . $row["Tiene_algun_tipo_de_mal_habito"] . '</td>
    </tr>
   ';
-
- }
- echo $output;
-}
-else
-{
- echo 'Realizar busqúeda';
+   }
+   echo $output;
+} else {
+   echo 'Realizar busqúeda';
 }
 
 // consulta tabla consulta odontograma...
-if(isset($_POST["query"]))
-{
- $search = mysqli_real_escape_string($db, $_POST["query"]);
- $query2 = "SELECT * FROM consulta WHERE cedula LIKE '%".$search."%'";
-}
-else
-{
- // $query = "SELECT * FROM consulta";
+if (isset($_POST["query"])) {
+   $search = mysqli_real_escape_string($db, $_POST["query"]);
+   $query2 = "SELECT * FROM consulta WHERE cedula LIKE '%" . $search . "%'";
+} else {
+   // $query = "SELECT * FROM consulta";
 }
 $result2 = mysqli_query($db, $query2);
-if(mysqli_num_rows($result2) > 0)
-{
- $output2 .= '
+if (mysqli_num_rows($result2) > 0) {
+   $output2 .= '
   <div class="table-responsive">
    <table class="table table bordered">
     <tr>
@@ -92,21 +80,15 @@ if(mysqli_num_rows($result2) > 0)
       <th>odontograma</th>
     </tr>
  ';
- while($row2 = mysqli_fetch_array($result2))
- {
-  $output2 .= '
+   while ($row2 = mysqli_fetch_array($result2)) {
+      $output2 .= '
    <tr>
-      <td>'.$row2["tratamiento"].'</td>
-      <td><img height="300" width="800" src="data:image/jpeg;base64,'.base64_encode($row2["imageData"]).'"/></td>
+      <td>' . $row2["tratamiento"] . '</td>
+      <td><img height="300" width="800" src="data:image/jpeg;base64,' . base64_encode($row2["imageData"]) . '"/></td>
    </tr>
   ';
-
- }
- echo $output2;
+   }
+   echo $output2;
+} else {
+   // echo 'Realizar busqúeda';
 }
-else
-{
- // echo 'Realizar busqúeda';
-}
-
-?>

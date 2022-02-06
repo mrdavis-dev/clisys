@@ -55,7 +55,7 @@ include("menu.php");
 							<h1 class="p-1 ">Próximas citas</h1>
 							<div class="container-fluid centrar" >
 							<?php
-							$dbc = mysqli_connect("172.17.0.7", "userroot", "#dbcontainer.com", "anguizola")
+							$dbc = mysqli_connect("172.17.0.9", "userroot", "#dbcontainer.com", "anguizola")
 							or die('Error connecting to MySQL server');
 							$query = "select * from citas_tabla";
 							$result = mysqli_query($dbc,$query)

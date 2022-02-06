@@ -2,7 +2,7 @@
 error_reporting(0);
 //fetch.php
 // include("conexion/config.php");
-$connect = mysqli_connect("172.17.0.7", "userroot", "#dbcontainer.com", "anguizola");
+$connect = mysqli_connect("172.17.0.9", "userroot", "#dbcontainer.com", "anguizola");
 $output = '';
 if(isset($_POST["query"]))
 {
