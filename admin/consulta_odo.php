@@ -2,7 +2,7 @@
 error_reporting(0);
 //fetch.php
 // include("conexion/config.php");
-$db = mysqli_connect("172.17.0.9", "userroot", "#dbcontainer.com", "anguizola");
+$db = mysqli_connect("mydbserver.mysql.database.azure.com", "mrdavis", "A@TPT2Q4hWgmw", "clinica_anguizola");
 $output = '';
 $output2 = '';
 if (isset($_POST["query"])) {
