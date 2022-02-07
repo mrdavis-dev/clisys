@@ -11,7 +11,7 @@ if(isset($_POST["query"]))
 }
 else
 {
- $query = "SELECT * FROM pago";
+ $query = "SELECT * FROM pago ORDER BY fecha DESC";
 }
 $result = mysqli_query($connect, $query);
 if(mysqli_num_rows($result) > 0)
