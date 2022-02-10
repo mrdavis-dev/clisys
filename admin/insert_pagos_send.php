@@ -37,7 +37,7 @@ if (isset($_POST['enviar'])) {
         $mail->Host = 'smtp.office365.com';  // Specify main and backup SMTP servers
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
         $mail->Username = 'clinicadentalanguizola@hotmail.com';                 // SMTP username
-        $mail->Password = 'CLINICAdental201921';                           // SMTP password
+        $mail->Password = 'CLINICAdental20192121';                           // SMTP password
         $mail->SMTPSecure = 'STARTTLS';                            // Enable TLS encryption, `ssl` also accepted
         $mail->Port = 587;                                    // TCP port to connect to
 
