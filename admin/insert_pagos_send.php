@@ -28,226 +28,229 @@ if (isset($_POST['enviar'])) {
     // Import PHPMailer classes into the global namespace
     // These must be at the top of your script, not inside a function
 
+//desactivar funcion temporal
 
-    $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
-    try {
-        // Server settings
-        // $mail->SMTPDebug = 2;                                 // Enable verbose debug output
-        $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'smtp.office365.com';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = 'clinicadentalanguizola@hotmail.com';                 // SMTP username
-        $mail->Password = 'CLINICAdental20192121';                           // SMTP password
-        $mail->SMTPSecure = 'STARTTLS';                            // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 587;                                    // TCP port to connect to
-
-
+//     $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+//     try {
+//         // Server settings
 //         // $mail->SMTPDebug = 2;                                 // Enable verbose debug output
-//         // $mail->isSMTP();                                      // Set mailer to use SMTP
-//         // $mail->Host = 'smtp.mailtrap.io';  // Specify main and backup SMTP servers
-//         // $mail->SMTPAuth = true;                               // Enable SMTP authentication
-//         // $mail->Username = '1e036fa7d28421';                 // SMTP username
-//         // $mail->Password = 'f9476716cd40b3';                           // SMTP password
-//         // $mail->SMTPSecure = 'slt';                            // Enable TLS encryption, `ssl` also accepted
-//         // $mail->Port = 2525;                                    // TCP port to connect to
+//         $mail->isSMTP();                                      // Set mailer to use SMTP
+//         $mail->Host = 'smtp.office365.com';  // Specify main and backup SMTP servers
+//         $mail->SMTPAuth = true;                               // Enable SMTP authentication
+//         $mail->Username = 'clinicadentalanguizola@hotmail.com';                 // SMTP username
+//         $mail->Password = 'CLINICAdental20192121';                           // SMTP password
+//         $mail->SMTPSecure = 'STARTTLS';                            // Enable TLS encryption, `ssl` also accepted
+//         $mail->Port = 587;                                    // TCP port to connect to
 
 
-//         //Recipients
-        $mail->setFrom('clinicadentalanguizola@hotmail.com', 'clinica Anguizola');
-        $mail->addAddress($email, $nombre);     // Add a recipient
+// //         // $mail->SMTPDebug = 2;                                 // Enable verbose debug output
+// //         // $mail->isSMTP();                                      // Set mailer to use SMTP
+// //         // $mail->Host = 'smtp.mailtrap.io';  // Specify main and backup SMTP servers
+// //         // $mail->SMTPAuth = true;                               // Enable SMTP authentication
+// //         // $mail->Username = '1e036fa7d28421';                 // SMTP username
+// //         // $mail->Password = 'f9476716cd40b3';                           // SMTP password
+// //         // $mail->SMTPSecure = 'slt';                            // Enable TLS encryption, `ssl` also accepted
+// //         // $mail->Port = 2525;                                    // TCP port to connect to
 
-//         //Content
-$mail->isHTML(true);                                  // Set email format to HTML
-        $mail->Subject = 'Factura Clinica Anguizola';
-        $mail->Body    = '<div class="invoice-card">
-          <img src="https://clinicaanguizola.herokuapp.com/Main/img/logo-color.png" style="width:50px;">
-          <div class="invoice-title">
-            <div id="main-title">
-              <h4>Clinica Anguizola</h4>
-            </div>
-            <span id="date">'.$fecha.'</span>
-          </div>
 
-          <div class="invoice-details">
-            <p></p>
-            <table class="invoice-table">
-              <thead>
-                <tr class="row-data">
-                  <td>nombre: '. $nombre .'</td>
-                  <td></td>
-                </tr>
-              </thead>
+// //         //Recipients
+//         $mail->setFrom('clinicadentalanguizola@hotmail.com', 'clinica Anguizola');
+//         $mail->addAddress($email, $nombre);     // Add a recipient
 
-              <tbody>
-                <tr class="row-data">
-                  <td>Cantidad pagada:</td>
-                  <td>'.$cantidad.'</td>
-                </tr>
-                <tr class="row-data">
-                  <td>Tipo de pago:</td>
-                  <td>'.$tipopago.'</td>
-                </tr>
-                <tr class="row-data">
-                  <td>Tratamiento:</td>
-                  <td>'.$tratamiento.'</td>
-                </tr>
-                <tr class="row-data">
-                  <td>Saldo restante:</td>
-                  <td>'.$saldototal.'</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+// //         //Content
+// $mail->isHTML(true);                                  // Set email format to HTML
+//         $mail->Subject = 'Factura Clinica Anguizola';
+//         $mail->Body    = '<div class="invoice-card">
+//           <img src="https://clinicaanguizola.herokuapp.com/Main/img/logo-color.png" style="width:50px;">
+//           <div class="invoice-title">
+//             <div id="main-title">
+//               <h4>Clinica Anguizola</h4>
+//             </div>
+//             <span id="date">'.$fecha.'</span>
+//           </div>
 
-          <div class="invoice-footer">
-            <p></p>
-          </div>
-        </div>
-        <style media="screen">
-        @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+//           <div class="invoice-details">
+//             <p></p>
+//             <table class="invoice-table">
+//               <thead>
+//                 <tr class="row-data">
+//                   <td>nombre: '. $nombre .'</td>
+//                   <td></td>
+//                 </tr>
+//               </thead>
 
-        :root {
-        --primary-color: #f5826e;
-        }
+//               <tbody>
+//                 <tr class="row-data">
+//                   <td>Cantidad pagada:</td>
+//                   <td>'.$cantidad.'</td>
+//                 </tr>
+//                 <tr class="row-data">
+//                   <td>Tipo de pago:</td>
+//                   <td>'.$tipopago.'</td>
+//                 </tr>
+//                 <tr class="row-data">
+//                   <td>Tratamiento:</td>
+//                   <td>'.$tratamiento.'</td>
+//                 </tr>
+//                 <tr class="row-data">
+//                   <td>Saldo restante:</td>
+//                   <td>'.$saldototal.'</td>
+//                 </tr>
+//               </tbody>
+//             </table>
+//           </div>
 
-        * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Roboto", sans-serif;
-        letter-spacing: 0.5px;
-        }
+//           <div class="invoice-footer">
+//             <p></p>
+//           </div>
+//         </div>
+//         <style media="screen">
+//         @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
-        body {
-        background-color: var(--primary-color);
-        }
+//         :root {
+//         --primary-color: #f5826e;
+//         }
 
-        .invoice-card {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        padding: 10px 2em;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        min-height: 25em;
-        width: 22em;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0px 10px 30px 5px rgba(0, 0, 0, 0.15);
-        }
+//         * {
+//         margin: 0;
+//         padding: 0;
+//         box-sizing: border-box;
+//         font-family: "Roboto", sans-serif;
+//         letter-spacing: 0.5px;
+//         }
 
-        .invoice-card > div {
-        margin: 5px 0;
-        }
+//         body {
+//         background-color: var(--primary-color);
+//         }
 
-        .invoice-title {
-        flex: 3;
-        }
+//         .invoice-card {
+//         display: flex;
+//         flex-direction: column;
+//         position: absolute;
+//         padding: 10px 2em;
+//         top: 50%;
+//         left: 50%;
+//         transform: translate(-50%, -50%);
+//         min-height: 25em;
+//         width: 22em;
+//         background-color: #fff;
+//         border-radius: 5px;
+//         box-shadow: 0px 10px 30px 5px rgba(0, 0, 0, 0.15);
+//         }
 
-        .invoice-title #date {
-        display: block;
-        margin: 8px 0;
-        font-size: 12px;
-        }
+//         .invoice-card > div {
+//         margin: 5px 0;
+//         }
 
-        .invoice-title #main-title {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 2em;
-        }
+//         .invoice-title {
+//         flex: 3;
+//         }
 
-        .invoice-title #main-title h4 {
-        letter-spacing: 2.5px;
-        }
+//         .invoice-title #date {
+//         display: block;
+//         margin: 8px 0;
+//         font-size: 12px;
+//         }
 
-        .invoice-title span {
-        color: rgba(0, 0, 0, 0.4);
-        }
+//         .invoice-title #main-title {
+//         display: flex;
+//         justify-content: space-between;
+//         margin-top: 2em;
+//         }
 
-        .invoice-details {
-        flex: 1;
-        border-top: 0.5px dashed grey;
-        border-bottom: 0.5px dashed grey;
-        display: flex;
-        align-items: center;
-        }
+//         .invoice-title #main-title h4 {
+//         letter-spacing: 2.5px;
+//         }
 
-        .invoice-table {
-        width: 100%;
-        border-collapse: collapse;
-        }
+//         .invoice-title span {
+//         color: rgba(0, 0, 0, 0.4);
+//         }
 
-        .invoice-table thead tr td {
-        font-size: 12px;
-        letter-spacing: 1px;
-        color: grey;
-        padding: 8px 0;
-        }
+//         .invoice-details {
+//         flex: 1;
+//         border-top: 0.5px dashed grey;
+//         border-bottom: 0.5px dashed grey;
+//         display: flex;
+//         align-items: center;
+//         }
 
-        .invoice-table thead tr td:nth-last-child(1),
-        .row-data td:nth-last-child(1),
-        .calc-row td:nth-last-child(1) {
-        text-align: right;
-        }
+//         .invoice-table {
+//         width: 100%;
+//         border-collapse: collapse;
+//         }
 
-        .invoice-table tbody tr td {
-        padding: 8px 0;
-        letter-spacing: 0;
-        }
+//         .invoice-table thead tr td {
+//         font-size: 12px;
+//         letter-spacing: 1px;
+//         color: grey;
+//         padding: 8px 0;
+//         }
 
-        .invoice-table .row-data #unit {
-        text-align: center;
-        }
+//         .invoice-table thead tr td:nth-last-child(1),
+//         .row-data td:nth-last-child(1),
+//         .calc-row td:nth-last-child(1) {
+//         text-align: right;
+//         }
 
-        .invoice-table .row-data span {
-        font-size: 13px;
-        color: rgba(0, 0, 0, 0.6);
-        }
+//         .invoice-table tbody tr td {
+//         padding: 8px 0;
+//         letter-spacing: 0;
+//         }
 
-        .invoice-footer {
-        flex: 1;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        }
+//         .invoice-table .row-data #unit {
+//         text-align: center;
+//         }
 
-        .invoice-footer #later {
-        margin-right: 5px;
-        }
+//         .invoice-table .row-data span {
+//         font-size: 13px;
+//         color: rgba(0, 0, 0, 0.6);
+//         }
 
-        .btn {
-        border: none;
-        padding: 5px 0px;
-        background: none;
-        cursor: pointer;
-        letter-spacing: 1px;
-        outline: none;
-        }
+//         .invoice-footer {
+//         flex: 1;
+//         display: flex;
+//         justify-content: flex-end;
+//         align-items: center;
+//         }
 
-        .btn.btn-secondary {
-        color: rgba(0, 0, 0, 0.3);
-        }
+//         .invoice-footer #later {
+//         margin-right: 5px;
+//         }
 
-        .btn.btn-primary {
-        color: var(--primary-color);
-        }
+//         .btn {
+//         border: none;
+//         padding: 5px 0px;
+//         background: none;
+//         cursor: pointer;
+//         letter-spacing: 1px;
+//         outline: none;
+//         }
 
-        .btn#later {
-        margin-right: 2em;
-        }
-        </style>
-        ';
-        // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+//         .btn.btn-secondary {
+//         color: rgba(0, 0, 0, 0.3);
+//         }
 
-        $mail->send();
-        echo 'Message has been sent';
+//         .btn.btn-primary {
+//         color: var(--primary-color);
+//         }
 
-    } catch (Exception $e) {
+//         .btn#later {
+//         margin-right: 2em;
+//         }
+//         </style>
+//         ';
+//         // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-        echo 'Message could not be sent.';
-        echo 'Mailer Error: ' . $mail->ErrorInfo;
-    }
+//         $mail->send();
+//         echo 'Message has been sent';
+
+//     } catch (Exception $e) {
+
+//         echo 'Message could not be sent.';
+//         echo 'Mailer Error: ' . $mail->ErrorInfo;
+//     }
+
+//desactiva hasta aqui
 
     header("location: historial.php");
 }
