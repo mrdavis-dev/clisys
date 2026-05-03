@@ -1,76 +1,42 @@
 <?php
-error_reporting(0);
-//fetch.php
-include("conexion/config.php");
+require_once __DIR__ . '/core/Auth.php';
+include __DIR__ . '/conexion/config.php';
+
 $output = '';
-if(isset($_POST["query"]))
-{
- $search = mysqli_real_escape_string($db, $_POST["query"]);
- $query = "SELECT * FROM pacientes WHERE cedula LIKE '%".$search."%' OR nombre LIKE '%".$search."%'
- ";
+
+if (isset($_POST['query'])) {
+    $search = '%' . $_POST['query'] . '%';
+    $stmt = $db->prepare(
+        'SELECT * FROM pacientes WHERE cedula LIKE ? OR nombre LIKE ?'
+    );
+    $stmt->bind_param('ss', $search, $search);
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    $result = $db->query('SELECT * FROM pacientes');
 }
-else
-{
- $query = "SELECT * FROM pacientes";
-}
-$result = mysqli_query($db, $query);
-if(mysqli_num_rows($result) > 0)
-{
- $output .= '
-  <div class="table-responsive">
-   <table class="table table bordered">
+
+if ($result->num_rows > 0) {
+    $output .= '<div class="table-responsive">
+   <table class="table table-bordered">
     <tr>
-     <th>id</th>
-     <th>Nombre</th>
-     <th>Apellidos</th>
-     <th>Cedula</th>
-     <th>Direccion</th>
-     <th>Teléfono</th>
-     <th>Email</th>
-     <th>Ocupación</th>
-    </tr>
-
- ';
- while($row = mysqli_fetch_array($result))
- {
-  $output .= '
-   <tr>
-    <td>'.$row["id"].'</td>
-    <td>'.$row["nombre"].'</td>
-    <td>'.$row["apellido"].'</td>
-    <td>'.$row["cedula"].'</td>
-    <td>'.$row["direccion"].'</td>
-    <td>'.$row["telefono"].'</td>
-    <td>'.$row["email"].'</td>
-    <td>'.$row["ocuapacion"].'</td>
-   </tr>
-
-
-  ';
- }
- echo $output;
+     <th>id</th><th>Nombre</th><th>Apellidos</th><th>Cedula</th>
+     <th>Direccion</th><th>Teléfono</th><th>Email</th><th>Ocupación</th>
+    </tr>';
+    while ($row = $result->fetch_assoc()) {
+        $output .= '<tr>
+    <td>' . h((string)$row['id']) . '</td>
+    <td>' . h($row['nombre']) . '</td>
+    <td>' . h($row['apellido']) . '</td>
+    <td>' . h($row['cedula']) . '</td>
+    <td>' . h($row['direccion']) . '</td>
+    <td>' . h($row['telefono']) . '</td>
+    <td>' . h($row['email']) . '</td>
+    <td>' . h($row['ocuapacion']) . '</td>
+   </tr>';
+    }
+    $output .= '</table></div>';
+    echo $output;
+} else {
+    echo 'Data Not Found';
 }
-else
-{
- echo 'Data Not Found';
-}
-
-// if(isset($_POST['delete']))
-// {
-//   $checkbox = $_POST['checkbox'];
-
-// for($i=0;$i<count($checkbox);$i++){
-
-// $del_id = $checkbox[$i];
-// $sql = "DELETE FROM pacientes WHERE id='$del_id'";
-// $result = mysqli_query($db,$sql);
-// }
-// // if successful redirect to delete_multiple.php
-// if($result){
-// echo "<meta http-equiv=\"refresh\" content=\"0;URL=pacientes.php\">";
-// }
-// }
-
-mysqli_close($db);
-
-?>

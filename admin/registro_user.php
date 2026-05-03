@@ -1,14 +1,7 @@
 <?php
-// Solo se permite el ingreso con el inicio de sesion.
-session_start();
-// Si el usuario no se ha logueado se le regresa al inicio.
-if (!isset($_SESSION['loggedin'])) {
-  header('Location: login.php');
-  exit;
-
-  $dni = $_SESSION['id'];
-}
-
+require_once __DIR__ . '/core/Auth.php';
+require_once __DIR__ . '/core/Csrf.php';
+Auth::require();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -41,6 +34,7 @@ if (!isset($_SESSION['loggedin'])) {
 
         <h2>Agregar usuario</h2>
         <form method="POST" action="insert_user.php">
+          <?= Csrf::field() ?>
 
           <label for="" class="mt-3">Usuario</label>
           <input type="text" class="form-control border" name="usuario" id="">
@@ -67,7 +61,8 @@ if (!isset($_SESSION['loggedin'])) {
             ?>
 
             <td>
-              <form name="form1" method="post" action="">
+              <form name="form1" method="post" action="registro_user.php">
+                <?= Csrf::field() ?>
                 <div class="container " style="overflow-y: scroll; height: 25rem; display: block;">
                   <table class="table">
                     <thead>
@@ -84,9 +79,9 @@ if (!isset($_SESSION['loggedin'])) {
                       ?>
 
                         <tr>
-                          <td align="center"><input name="checkbox[]" type="checkbox" value="<?php echo $row['id']; ?>"></td>
-                          <td><?php echo $row['username']; ?></td>
-                          <td><?php echo $row['name']; ?></td>
+                          <td align="center"><input name="checkbox[]" type="checkbox" value="<?= h((string)$row['id']) ?>"></td>
+                          <td><?= h($row['username']) ?></td>
+                          <td><?= h($row['name']) ?></td>
 
                         </tr>
 
@@ -101,24 +96,17 @@ if (!isset($_SESSION['loggedin'])) {
 
                 <?php
 
-                // Check if delete button active, start this
-
-                if (isset($_POST['delete'])) {
-                  $checkbox = $_POST['checkbox'];
-
-                  for ($i = 0; $i < count($checkbox); $i++) {
-
-                    $del_id = $checkbox[$i];
-                    $sql = "DELETE FROM users WHERE id = '$del_id'";
-                    $result = mysqli_query($db, $sql);
+                if (isset($_POST['delete']) && !empty($_POST['checkbox'])) {
+                  Csrf::verify();
+                  $stmt = $db->prepare('DELETE FROM users WHERE id = ?');
+                  foreach ($_POST['checkbox'] as $del_id) {
+                    $id_int = (int)$del_id;
+                    $stmt->bind_param('i', $id_int);
+                    $stmt->execute();
                   }
-                  // if successful redirect to delete_multiple.php
-                  if ($result) {
-                    echo "<meta http-equiv=\"refresh\" content=\"0;URL=registro_user.php\">";
-                  }
+                  $stmt->close();
+                  echo "<meta http-equiv=\"refresh\" content=\"0;URL=registro_user.php\">";
                 }
-
-                mysqli_close($db);
 
                 ?>
 

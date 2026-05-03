@@ -1,27 +1,31 @@
 <?php
-include_once('conexion/config.php');
+require_once __DIR__ . '/core/Csrf.php';
+session_start();
+Csrf::verify();
+require_once __DIR__ . '/conexion/config.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-//Load composer's autoloader
-require 'vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 if (isset($_POST['enviar'])) {
-    /* Aqui harias el send */
-    $fecha = $_POST['fecha'];
-    $cedula = $_POST['cedula'];
-    $nombre = $_POST['nombre'].' '.$_POST["apellido"];
-    $cantidad = $_POST['cantidad'];
-    $tipopago = $_POST['tipo_pago'];
-    $saldo = $_POST['saldo'];
+    $fecha       = $_POST['fecha']    ?? '';
+    $cedula      = $_POST['cedula']   ?? '';
+    $nombre      = trim(($_POST['nombre'] ?? '') . ' ' . ($_POST['apellido'] ?? ''));
+    $cantidad    = (float)($_POST['cantidad'] ?? 0);
+    $tipopago    = $_POST['tipo_pago'] ?? '';
+    $saldo       = (float)($_POST['saldo'] ?? 0);
+    $saldototal  = $saldo - $cantidad;
+    $email       = $_POST['email']    ?? '';
+    $tratamiento = $_POST['trata']    ?? '';
+    $nota        = $_POST['nota']     ?? '';
 
-    $saldototal = $saldo - $cantidad;
-
-    $email = $_POST['email'];
-    $tratamiento = $_POST['trata'];
-    $nota = $_POST['nota'];
-
-    $sql = "insert into pago (id,fecha,nombre,cedula,monto,tipo_de_pago,saldo,tratamiento,nota) values (id,'$fecha','$nombre','$cedula','$cantidad','$tipopago','$saldototal','$tratamiento','$nota')";
-    mysqli_query($db,$sql);
+    $stmt = $db->prepare(
+        'INSERT INTO pago (fecha, nombre, cedula, monto, tipo_de_pago, saldo, tratamiento, nota)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+    );
+    $stmt->bind_param('ssssssss', $fecha, $nombre, $cedula, $cantidad, $tipopago, $saldototal, $tratamiento, $nota);
+    $stmt->execute();
+    $stmt->close();
 
 
     // send email
@@ -34,13 +38,13 @@ if (isset($_POST['enviar'])) {
     try {
         // Server settings
         // $mail->SMTPDebug = 2;                                 // Enable verbose debug output
-        $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'smtp.office365.com';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = '@hotmail.com';                 // SMTP username
-        $mail->Password = '';                           // SMTP password
-        $mail->SMTPSecure = 'STARTTLS';                            // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 587;                                    // TCP port to connect to
+        $mail->isSMTP();
+        $mail->Host       = $_ENV['SMTP_HOST'];
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $_ENV['SMTP_USERNAME'];
+        $mail->Password   = $_ENV['SMTP_PASSWORD'];
+        $mail->SMTPSecure = 'STARTTLS';
+        $mail->Port       = (int)$_ENV['SMTP_PORT'];
 
 
 //         // $mail->SMTPDebug = 2;                                 // Enable verbose debug output
@@ -54,7 +58,7 @@ if (isset($_POST['enviar'])) {
 
 
 //         //Recipients
-        $mail->setFrom('clinicadentalanguizola@hotmail.com', 'clinica Anguizola');
+        $mail->setFrom($_ENV['SMTP_FROM'], $_ENV['SMTP_FROM_NAME']);
         $mail->addAddress($email, $nombre);     // Add a recipient
 
 //         //Content
@@ -256,7 +260,6 @@ $mail->isHTML(true);                                  // Set email format to HTM
 }
 
 
-include_once "vendor/autoload.php";
 use Dompdf\Dompdf;
 if (isset($_POST['print'])) {
   $fecha = $_POST['fecha'];

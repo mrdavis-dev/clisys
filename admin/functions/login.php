@@ -20,15 +20,14 @@
 </body>
 </html>
 <?php
+require_once __DIR__ . '/../core/Csrf.php';
 session_start();
-require_once("../conexion/config.php");
+Csrf::verify();
+require_once __DIR__ . '/../conexion/config.php';
 
-//VERIFICACION DE ESCRITURA DE DATOS EN EL FORM
-			if ( !isset($_POST['username'], $_POST['password']) )
-            {
-			// Could not get the data that should have been sent.
-			exit('Please fill both the username and password fields!');
-			}
+if (!isset($_POST['username'], $_POST['password'])) {
+    exit('Por favor completa usuario y contraseña.');
+}
 
 //  SI SE CONECTO Y SI SE ENVIARON AMBOS DATOS SE PROCEDE CON LA CONSULTA DE EXISTENCIA DEL USUARIO EVITANDO INYECCIONES SQL ?
 if ($stmt = $db->prepare('SELECT id, password FROM users WHERE username = ?'))

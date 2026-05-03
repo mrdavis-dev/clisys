@@ -31,19 +31,17 @@
         <li>
           <?php
           include "conexion/config.php";
+          if (!class_exists('Csrf')) { require_once __DIR__ . '/core/Csrf.php'; }
 
-          // Check user login or not
-          if(!isset($_SESSION['uname'])){
-              // header('Location: index.php');
-          }
-
-          // logout
-          if(isset($_POST['but_logout'])){
+          if (isset($_POST['but_logout'])) {
+              session_unset();
               session_destroy();
               header('Location: index.php');
+              exit;
           }
           ?>
           <form method='post' action="">
+            <?= Csrf::field() ?>
             <input style="margin-top:25px" class="btn btn-danger" type="submit" value="Cerrar Sesion" name="but_logout">
         </form>
         </li>

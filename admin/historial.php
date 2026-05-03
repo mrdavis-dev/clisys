@@ -1,14 +1,7 @@
 <?php
-// Solo se permite el ingreso con el inicio de sesion.
-session_start();
-// Si el usuario no se ha logueado se le regresa al inicio.
-if (!isset($_SESSION['loggedin'])) {
-  header('Location: login.php');
-  exit;
-
-  $dni = $_SESSION['id'];
-}
-
+require_once __DIR__ . '/core/Auth.php';
+require_once __DIR__ . '/core/Csrf.php';
+Auth::require();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,29 +80,17 @@ if (!isset($_SESSION['loggedin'])) {
             </div>
             <div class="">
 
-                <?php
-             if(isset($_POST['delete'])) {
-
-                // if(! $db ) {
-                //    die('Could not connect: ' . mysqli_error($db));
-                // }
-
-                $emp_id = $_POST['emp_id'];
-
-                $sql = "DELETE FROM pago WHERE id = $emp_id" ;
-                // mysqli_select_db($conn,'anguizola');
-                $retval = mysqli_query( $db,$sql );
-
-                if(! $retval ) {
-                   die('Could not delete data: ' . mysqli_error($db));
-                }
-
-                // echo "Deleted data successfully\n";
-
-                mysqli_close($db);
-             }else
+                     <?php
+             if (isset($_POST['delete'])) {
+                Csrf::verify();
+                $stmt = $db->prepare('DELETE FROM pago WHERE id = ?');
+                $stmt->bind_param('i', $_POST['emp_id']);
+                $stmt->execute();
+                $stmt->close();
+             } else {
             ?>
-               <form method = "post" action = "<?php $_PHP_SELF ?>">
+               <form method="post" action="historial.php">
+               <?= Csrf::field() ?>
                   <table width = "400" border = "0" cellspacing = "1"
                      cellpadding = "2">
 

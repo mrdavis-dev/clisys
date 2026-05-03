@@ -1,26 +1,14 @@
 <?php
-// error_reporting(0);
-include_once('conexion/config.php');
+require_once __DIR__ . '/core/Csrf.php';
+session_start();
+Csrf::verify();
+require_once __DIR__ . '/conexion/config.php';
 
-// $delete_pacient = $_POST['iddelete'];
-//
-// if (isset($_POST["delte"])) {
-// $querydelete = "DELETE FROM `pacientes` WHERE id = '$delete_pacient'";
-// $result = mysqli_query($db, $querydelete);
-// }
-// if($result){
-//   header('pacientes.php');
-// }
-
-
-if(!empty($_POST['idelete'])){
-$id=$_POST['idelete'];
-}
-$query = "DELETE FROM `pago` WHERE id = '".$id."'";
-$result = mysqli_query($db, $query);
-if ( !$result ) {
-    trigger_error('query failed', E_USER_ERROR);
+if (!empty($_POST['idelete'])) {
+    $stmt = $db->prepare('DELETE FROM pago WHERE id = ?');
+    $stmt->bind_param('i', $_POST['idelete']);
+    $stmt->execute();
+    $stmt->close();
 }
 
-header('historial.php');
-?>
+header('Location: historial.php');

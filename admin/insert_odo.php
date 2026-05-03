@@ -1,19 +1,24 @@
 <?php
-if(count($_FILES) > 0) {
-if(is_uploaded_file($_FILES['userImage']['tmp_name'])) {
-  include_once('conexion/config.php');
+require_once __DIR__ . '/core/Csrf.php';
+session_start();
+Csrf::verify();
+require_once __DIR__ . '/conexion/config.php';
 
-    $id = $_POST['search'];
-    $consulta = $_POST['consul'];
-    $imgData =addslashes(file_get_contents($_FILES['userImage']['tmp_name']));
-	  $imageProperties = getimageSize($_FILES['userImage']['tmp_name']);
+if (count($_FILES) > 0 && is_uploaded_file($_FILES['userImage']['tmp_name'])) {
+    $cedula    = $_POST['search'] ?? '';
+    $consulta  = $_POST['consul'] ?? '';
+    $imageData = file_get_contents($_FILES['userImage']['tmp_name']);
+    $imageProps = getimagesize($_FILES['userImage']['tmp_name']);
+    $mime      = $imageProps['mime'] ?? 'image/png';
+    $null      = null;
 
-	$sql = "INSERT INTO consulta(cedula,tratamiento,imageType,imageData)
-	VALUES('$id','$consulta','{$imageProperties['mime']}', '{$imgData}')";
-	$current_id = mysqli_query($db, $sql) or die("<b>Error:</b> Problem on Image Insert<br/>" . mysqli_error($db));
-	if(isset($current_id)) {
-		header("Location: odontograma.php");
-	}
+    $stmt = $db->prepare(
+        'INSERT INTO consulta (cedula, tratamiento, imageType, imageData) VALUES (?, ?, ?, ?)'
+    );
+    $stmt->bind_param('sssb', $cedula, $consulta, $mime, $null);
+    $stmt->send_long_data(3, $imageData);
+    $stmt->execute();
+    $stmt->close();
+    header('Location: odontograma.php');
+    exit;
 }
-}
-?>

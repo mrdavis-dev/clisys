@@ -1,14 +1,7 @@
 <?php
-// Solo se permite el ingreso con el inicio de sesion.
-session_start();
-// Si el usuario no se ha logueado se le regresa al inicio.
-if (!isset($_SESSION['loggedin'])) {
-  header('Location: login.php');
-  exit;
-
-  $dni = $_SESSION['id'];
-}
-
+require_once __DIR__ . '/core/Auth.php';
+require_once __DIR__ . '/core/Csrf.php';
+Auth::require();
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +35,7 @@ if (!isset($_SESSION['loggedin'])) {
                 <h1 class="display-3">Pagos</h1>
             </div>
             <form action="insert_pagos_send.php" method="post">
+                <?= Csrf::field() ?>
                 <div class="container">
                     <div class="row">
                         <div class="col-8">

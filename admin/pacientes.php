@@ -1,14 +1,7 @@
 <?php
-// Solo se permite el ingreso con el inicio de sesion.
-session_start();
-// Si el usuario no se ha logueado se le regresa al inicio.
-if (!isset($_SESSION['loggedin'])) {
-  header('Location: login.php');
-  exit;
-
-  $dni = $_SESSION['id'];
-}
-
+require_once __DIR__ . '/core/Auth.php';
+require_once __DIR__ . '/core/Csrf.php';
+Auth::require();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -56,31 +49,24 @@ if (!isset($_SESSION['loggedin'])) {
 
 					<!-- btn delete -->
 					<div class="col-2 mt-3">
-						<form method="post" action="<?php $_PHP_SELF ?>">
+						<form method="post" action="pacientes.php">
+							<?= Csrf::field() ?>
 							<input class="btn btn-danger shadow w-100" name="delete" autocomplete="off" type="submit" id="delete" value="Borrar">
 					</div>
 					<div class="col-10 mt-3">
 						<input type="text" class="form-control border w-25 text-dark" name="emp_id" autocomplete="off" id="emp_id" placeholder="ID del paciente">
 					</div>
-					
+
 					</form>
 					<div class="">
-						
+
 						<?php
 						if (isset($_POST['delete'])) {
-							// include("conexion/config.php");
-
-							$emp_id = $_POST['emp_id'];
-
-							$sql = "DELETE FROM pacientes WHERE id = $emp_id";
-							mysqli_select_db($db, 'clinica');
-							$retval = mysqli_query($db, $sql);
-
-							if (!$retval) {
-								die('Could not delete data: ' . mysqli_error($db));
-							}
-							// echo "Deleted data successfully\n";
-							mysqli_close($db);
+							Csrf::verify();
+							$stmt = $db->prepare('DELETE FROM pacientes WHERE id = ?');
+							$stmt->bind_param('i', $_POST['emp_id']);
+							$stmt->execute();
+							$stmt->close();
 						}
 						?>
 

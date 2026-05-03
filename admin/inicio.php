@@ -1,14 +1,7 @@
 <?php
-// Solo se permite el ingreso con el inicio de sesion.
-session_start();
-// Si el usuario no se ha logueado se le regresa al inicio.
-if (!isset($_SESSION['loggedin'])) {
-  header('Location: login.php');
-  exit;
-
-  $dni = $_SESSION['id'];
-}
-
+require_once __DIR__ . '/core/Auth.php';
+require_once __DIR__ . '/core/Csrf.php';
+Auth::require();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,16 +48,14 @@ include("menu.php");
 							<h1 class="p-1 ">Próximas citas</h1>
 							<div class="container-fluid centrar" >
 							<?php
-							$dbc = mysqli_connect("mydbserver.mysql.database.azure.com", "mrdavis", "A@TPT2Q4hWgmw", "clinica_anguizola")
-							or die('Error connecting to MySQL server');
-							$query = "select * from citas_tabla";
-							$result = mysqli_query($dbc,$query)
-							or die('Error querying database');
+							require_once __DIR__ . '/conexion/config.php';
+							$result = $db->query("SELECT * FROM citas_tabla");
 
 							$count=mysqli_num_rows($result);
 							?>
 
               <td><form name="form1" method="post" action="">
+              <?= Csrf::field() ?>
               <div class="container " style="overflow-y: scroll; height: 25rem; display: block;">
                   <table class="table" >
                       <thead>
@@ -82,12 +73,12 @@ include("menu.php");
           							?>
 
           							<tr>
-          							<td align="center" ><input name="checkbox[]" type="checkbox" value="<?php echo $row['id']; ?>"></td>
-          							<td ><?php echo $row['fecha_de_cita']; ?></td>
-          							<td ><?php echo $row['hora_de_cita']; ?></td>
-          							<td ><?php echo $row['nombre_paciente']; ?></td>
-          							<td ><?php echo $row['asunto_de_la_cita']; ?></td>
-                        <td ><?php echo $row['doctor']; ?></td>
+          							<td align="center"><input name="checkbox[]" type="checkbox" value="<?= h((string)$row['id']) ?>"></td>
+          							<td><?= h($row['fecha_de_cita']) ?></td>
+          							<td><?= h($row['hora_de_cita']) ?></td>
+          							<td><?= h($row['nombre_paciente']) ?></td>
+          							<td><?= h($row['asunto_de_la_cita']) ?></td>
+                        <td><?= h($row['doctor']) ?></td>
           							</tr>
 
           							<?php
@@ -100,26 +91,17 @@ include("menu.php");
                 <input class="btn btn-secondary" name="delete" type="submit" value="Borrar">
 
 							<?php
-
-							// Check if delete button active, start this
-
-							if(isset($_POST['delete']))
-							{
-								$checkbox = $_POST['checkbox'];
-
-							for($i=0;$i<count($checkbox);$i++){
-
-							$del_id = $checkbox[$i];
-							$sql = "DELETE FROM citas_tabla WHERE id='$del_id'";
-							$result = mysqli_query($db,$sql);
+							if (isset($_POST['delete']) && !empty($_POST['checkbox'])) {
+								Csrf::verify();
+								$stmt = $db->prepare('DELETE FROM citas_tabla WHERE id = ?');
+								foreach ($_POST['checkbox'] as $del_id) {
+									$id_int = (int)$del_id;
+									$stmt->bind_param('i', $id_int);
+									$stmt->execute();
+								}
+								$stmt->close();
+								echo "<meta http-equiv=\"refresh\" content=\"0;URL=inicio.php\">";
 							}
-							// if successful redirect to delete_multiple.php
-							if($result){
-							echo "<meta http-equiv=\"refresh\" content=\"0;URL=inicio.php\">";
-							}
-							}
-
-							mysqli_close($db);
 
 							?>
 
@@ -143,6 +125,7 @@ include("menu.php");
 					  </button>
 					</div>
 					<form method="POST" action="insert_paciente.php">
+					<?= Csrf::field() ?>
 					<div class="modal-body ">
 					  <div class="container">
 						<label for="id_nombre">Nombre</label>
@@ -293,6 +276,7 @@ include("menu.php");
 					</div>
 
 					<form action="insert.php" method="POST">
+					<?= Csrf::field() ?>
 					<div class="modal-body ">
 					  <div class="container">
 						<label for="fecha">Fecha de cita</label>
