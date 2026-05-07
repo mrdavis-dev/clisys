@@ -1,10 +1,18 @@
 <?php
 require_once __DIR__ . '/core/Csrf.php';
+require_once __DIR__ . '/core/Audit.php';
+require_once __DIR__ . '/core/Plan.php';
 session_start();
 Csrf::verify();
 require_once __DIR__ . '/conexion/config.php';
 
 if (isset($_POST['submit'])) {
+    // Enforce plan patient limit before inserting
+    if (!Plan::withinLimit('patients')) {
+        header('Location: inicio.php?limit=patients');
+        exit;
+    }
+
     $clinic_id  = Tenant::id();
     $nombre     = $_POST['nombre']          ?? '';
     $apellido   = $_POST['apellido']        ?? '';
@@ -47,7 +55,9 @@ if (isset($_POST['submit'])) {
         $diabetico, $hepatitis, $sangrado, $transmision, $habito
     );
     $stmt->execute();
+    $new_id = (string)$db->insert_id;
     $stmt->close();
+    Audit::log('insert_patient', 'pacientes', $new_id);
     header('Location: inicio.php?guardado');
     exit;
 }

@@ -67,9 +67,18 @@ if (isset($_POST['query'])) {
    <table class="table table-bordered">
     <tr><th>Tratamiento</th><th>Odontograma</th></tr>';
         while ($row2 = $result2->fetch_assoc()) {
+            // Fase 3: prefer disk path; fall back to inline BLOB for legacy rows
+            if (!empty($row2['imagen_path'])) {
+                $imgSrc = h('uploads/' . $row2['imagen_path']);
+                $imgTag = '<img height="300" width="800" src="' . $imgSrc . '" alt="odontograma"/>';
+            } else {
+                $mime   = h($row2['imageType'] ?? 'image/jpeg');
+                $b64    = base64_encode((string)$row2['imageData']);
+                $imgTag = '<img height="300" width="800" src="data:' . $mime . ';base64,' . $b64 . '" alt="odontograma"/>';
+            }
             $output2 .= '<tr>
       <td>' . h($row2['tratamiento']) . '</td>
-      <td><img height="300" width="800" src="data:image/jpeg;base64,' . base64_encode($row2['imageData']) . '"/></td>
+      <td>' . $imgTag . '</td>
    </tr>';
         }
         $output2 .= '</table></div>';

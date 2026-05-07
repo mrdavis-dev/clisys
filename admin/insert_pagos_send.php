@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/core/Csrf.php';
+require_once __DIR__ . '/core/Audit.php';
 session_start();
 Csrf::verify();
 require_once __DIR__ . '/conexion/config.php';
@@ -26,8 +27,9 @@ if (isset($_POST['enviar'])) {
     );
     $stmt->bind_param('issssssss', $clinic_id, $fecha, $nombre, $cedula, $cantidad, $tipopago, $saldototal, $tratamiento, $nota);
     $stmt->execute();
+    $pago_id = (string)$db->insert_id;
     $stmt->close();
-
+    Audit::log('insert_pago', 'pago', $pago_id);
 
     // send email
     // Import PHPMailer classes into the global namespace

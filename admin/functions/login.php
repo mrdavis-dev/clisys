@@ -21,6 +21,7 @@
 </html>
 <?php
 require_once __DIR__ . '/../core/Csrf.php';
+require_once __DIR__ . '/../core/Audit.php';
 session_start();
 Csrf::verify();
 require_once __DIR__ . '/../conexion/config.php';
@@ -52,7 +53,7 @@ if ($stmt = $db->prepare('SELECT id, password, clinic_id FROM users WHERE userna
 					$_SESSION['username']   = $_POST['username'];
 					$_SESSION['id']         = $dni;
 					$_SESSION['clinic_id']  = (int)$clinic_id;
-			        // echo 'BIENVENIDO USUARIOP : ' . $_SESSION['name'] .' CON TU DNI NUMERO : '. $_SESSION['dni'] . '!';
+					Audit::log('login', 'users', (string)$dni);
                     header('Location: ../inicio.php');
                    
 				} 
