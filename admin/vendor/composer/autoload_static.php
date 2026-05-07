@@ -10,10 +10,15 @@ class ComposerStaticInite86a189600ba07e31bdaa41876293514
         'S' => 
         array (
             'Svg\\' => 4,
+            'Sabberworm\\CSS\\' => 15,
         ),
         'P' => 
         array (
             'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'M' => 
+        array (
+            'Masterminds\\' => 12,
         ),
         'F' => 
         array (
@@ -30,9 +35,17 @@ class ComposerStaticInite86a189600ba07e31bdaa41876293514
         array (
             0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg',
         ),
+        'Sabberworm\\CSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
+        ),
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Masterminds\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/masterminds/html5/src',
         ),
         'FontLib\\' => 
         array (
@@ -44,23 +57,9 @@ class ComposerStaticInite86a189600ba07e31bdaa41876293514
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'S' => 
-        array (
-            'Sabberworm\\CSS' => 
-            array (
-                0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/lib',
-            ),
-        ),
-    );
-
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
-        'HTML5_Data' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Data.php',
-        'HTML5_InputStream' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/InputStream.php',
-        'HTML5_Parser' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Parser.php',
-        'HTML5_Tokenizer' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Tokenizer.php',
-        'HTML5_TreeBuilder' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/TreeBuilder.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -68,7 +67,6 @@ class ComposerStaticInite86a189600ba07e31bdaa41876293514
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInite86a189600ba07e31bdaa41876293514::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInite86a189600ba07e31bdaa41876293514::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInite86a189600ba07e31bdaa41876293514::$prefixesPsr0;
             $loader->classMap = ComposerStaticInite86a189600ba07e31bdaa41876293514::$classMap;
 
         }, null, ClassLoader::class);
