@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/core/Csrf.php';
+require_once __DIR__ . '/core/Audit.php';
 session_start();
 Csrf::verify();
 require_once __DIR__ . '/conexion/config.php';
@@ -18,7 +19,9 @@ if (isset($_POST['save'])) {
     );
     $stmt->bind_param('isssss', $clinic_id, $fecha, $hora, $nombre, $asunto, $doctor);
     $stmt->execute();
+    $new_id = (string)$db->insert_id;
     $stmt->close();
+    Audit::log('insert_cita', 'citas_tabla', $new_id);
     header('Location: inicio.php?guardado');
     exit;
 }

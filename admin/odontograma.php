@@ -1,7 +1,11 @@
 <?php
 require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Csrf.php';
+require_once __DIR__ . '/core/Module.php';
 Auth::require();
+// Ensure conexion/config is loaded so Tenant is available for Module check
+require_once __DIR__ . '/conexion/config.php';
+Module::require('odontogram');
 ?>
 <!DOCTYPE html>
 <html lang="en">
