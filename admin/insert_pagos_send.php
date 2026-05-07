@@ -19,11 +19,12 @@ if (isset($_POST['enviar'])) {
     $tratamiento = $_POST['trata']    ?? '';
     $nota        = $_POST['nota']     ?? '';
 
+    $clinic_id = Tenant::id();
     $stmt = $db->prepare(
-        'INSERT INTO pago (fecha, nombre, cedula, monto, tipo_de_pago, saldo, tratamiento, nota)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+        'INSERT INTO pago (clinic_id, fecha, nombre, cedula, monto, tipo_de_pago, saldo, tratamiento, nota)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
     );
-    $stmt->bind_param('ssssssss', $fecha, $nombre, $cedula, $cantidad, $tipopago, $saldototal, $tratamiento, $nota);
+    $stmt->bind_param('issssssss', $clinic_id, $fecha, $nombre, $cedula, $cantidad, $tipopago, $saldototal, $tratamiento, $nota);
     $stmt->execute();
     $stmt->close();
 

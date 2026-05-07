@@ -49,7 +49,11 @@ include("menu.php");
 							<div class="container-fluid centrar" >
 							<?php
 							require_once __DIR__ . '/conexion/config.php';
-							$result = $db->query("SELECT * FROM citas_tabla");
+							$clinic_id = Tenant::id();
+							$stmt_citas = $db->prepare('SELECT * FROM citas_tabla WHERE clinic_id = ?');
+							$stmt_citas->bind_param('i', $clinic_id);
+							$stmt_citas->execute();
+							$result = $stmt_citas->get_result();
 
 							$count=mysqli_num_rows($result);
 							?>
@@ -93,10 +97,11 @@ include("menu.php");
 							<?php
 							if (isset($_POST['delete']) && !empty($_POST['checkbox'])) {
 								Csrf::verify();
-								$stmt = $db->prepare('DELETE FROM citas_tabla WHERE id = ?');
+								$clinic_id_del = Tenant::id();
+								$stmt = $db->prepare('DELETE FROM citas_tabla WHERE id = ? AND clinic_id = ?');
 								foreach ($_POST['checkbox'] as $del_id) {
 									$id_int = (int)$del_id;
-									$stmt->bind_param('i', $id_int);
+									$stmt->bind_param('ii', $id_int, $clinic_id_del);
 									$stmt->execute();
 								}
 								$stmt->close();
@@ -294,9 +299,17 @@ include("menu.php");
             <label for="">Doctor de preferencia</label>
             <select name="doctor" required class="form-control" id="">
                 <option value="">Seleccione un Doctor...</option>
-                <option value="Dr. Júlio Anguizola Vial">Dr. Júlio Anguizola Vial</option>
-                <option value="Dr. Miguel Anguizola Severino">Dr. Miguel Anguizola Severino</option>
-                <option value="Dr. Amira Martínez de Anguizola">Dr. Amira Martínez de Anguizola</option>
+                <?php
+                $cid_doc = Tenant::id();
+                $stmt_doc = $db->prepare('SELECT name FROM staff WHERE clinic_id = ? AND active = 1 ORDER BY name');
+                $stmt_doc->bind_param('i', $cid_doc);
+                $stmt_doc->execute();
+                $res_doc = $stmt_doc->get_result();
+                while ($doc = $res_doc->fetch_assoc()) {
+                    echo '<option value="' . h($doc['name']) . '">' . h($doc['name']) . '</option>';
+                }
+                $stmt_doc->close();
+                ?>
             </select>
 					  </div>
 					</div>

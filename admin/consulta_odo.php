@@ -2,14 +2,17 @@
 require_once __DIR__ . '/core/Auth.php';
 include __DIR__ . '/conexion/config.php';
 
-$output  = '';
-$output2 = '';
+$output    = '';
+$output2   = '';
+$clinic_id = Tenant::id();
 
 if (isset($_POST['query'])) {
     $search = '%' . $_POST['query'] . '%';
 
-    $stmt = $db->prepare('SELECT * FROM pacientes WHERE cedula LIKE ?');
-    $stmt->bind_param('s', $search);
+    $stmt = $db->prepare(
+        'SELECT * FROM pacientes WHERE clinic_id = ? AND cedula LIKE ?'
+    );
+    $stmt->bind_param('is', $clinic_id, $search);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -30,7 +33,7 @@ if (isset($_POST['query'])) {
     <td>' . h($row['cedula']) . '</td>
     <td>' . h($row['apellido']) . '</td>
     <td>' . h($row['edad']) . '</td>
-    <td>' . h($row['motivo_consuta']) . '</td>
+    <td>' . h($row['motivo_consulta']) . '</td>
     <td>' . h($row['habitos_higienicos']) . '</td>
     <td>' . h($row['esta_bajo_tratamiento_actualmente']) . '</td>
     <td>' . h($row['Ha_sido_hospitalizado_quirurgicamente']) . '</td>
@@ -52,8 +55,10 @@ if (isset($_POST['query'])) {
     $stmt->close();
 
     // Odontogram records for same patient
-    $stmt2 = $db->prepare('SELECT * FROM consulta WHERE cedula LIKE ?');
-    $stmt2->bind_param('s', $search);
+    $stmt2 = $db->prepare(
+        'SELECT * FROM consulta WHERE clinic_id = ? AND cedula LIKE ?'
+    );
+    $stmt2->bind_param('is', $clinic_id, $search);
     $stmt2->execute();
     $result2 = $stmt2->get_result();
 

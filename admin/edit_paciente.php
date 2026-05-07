@@ -36,9 +36,10 @@ Auth::require();
             <div class="container mt-5">
                 <div class="text-start">
                     <?php
-                    $id = (int)($_GET['id'] ?? 0);
-                    $stmt = $db->prepare('SELECT * FROM pacientes WHERE id = ?');
-                    $stmt->bind_param('i', $id);
+                    $id        = (int)($_GET['id'] ?? 0);
+                    $clinic_id = Tenant::id();
+                    $stmt = $db->prepare('SELECT * FROM pacientes WHERE id = ? AND clinic_id = ?');
+                    $stmt->bind_param('ii', $id, $clinic_id);
                     $stmt->execute();
                     $result = $stmt->get_result();
 
@@ -65,7 +66,7 @@ Auth::require();
                             <input type="text" class="mb-1 form-control border border-primary" name="email" value="<?= h($row['email']) ?>">
 
                             <label for="id_ocupacion">Ocupacion</label>
-                            <input type="text" class="mb-1 form-control border border-primary" name="ocupacion" value="<?= h($row['ocuapacion']) ?>">
+                            <input type="text" class="mb-1 form-control border border-primary" name="ocupacion" value="<?= h($row['ocupacion']) ?>">
 
                             <label for="id_edad">Edad</label>
                             <input type="text" class="mb-1 form-control border border-primary" name="edad" value="<?= h($row['edad']) ?>">

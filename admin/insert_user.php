@@ -13,10 +13,11 @@ if ($user === '' || $name === '' || $pass === '') {
     exit;
 }
 
+$clinic_id    = Tenant::id();
 $hashPassword = password_hash($pass, PASSWORD_BCRYPT, ['cost' => 12]);
 
-$stmt = $db->prepare('INSERT INTO users (username, name, password) VALUES (?, ?, ?)');
-$stmt->bind_param('sss', $user, $name, $hashPassword);
+$stmt = $db->prepare('INSERT INTO users (clinic_id, username, name, password) VALUES (?, ?, ?, ?)');
+$stmt->bind_param('isss', $clinic_id, $user, $name, $hashPassword);
 $stmt->execute();
 $stmt->close();
 
