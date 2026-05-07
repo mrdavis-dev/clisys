@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/core/Csrf.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -28,6 +29,7 @@
       <h5 class="mb-4 font-weight-bold">Crear nueva cuenta</h5>
 
       <form action="functions/register.php" method="POST">
+        <?= Csrf::field() ?>
 
         <div class="mb-4 ">
           <label style="float:left" for="">Nombre:</label>

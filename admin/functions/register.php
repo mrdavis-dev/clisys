@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,65 +8,58 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-    </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
-
-    <script src="../../js/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <title>Registrado</title>
 </head>
-
 <body class="container">
-    <div class="text-center">
-        <img src="../img/.png" style="width: 50%;" class="img-fluid">
-    </div>
+<?php
+require_once __DIR__ . '/../core/Csrf.php';
+session_start();
+Csrf::verify();
+require_once __DIR__ . '/../conexion/config.php';
 
-    <?php
-    //hide error and notice
-    // error_reporting(0);
-    // ini_set('display_errors', 0);
-    // Include conn
-    require_once "../conexion/config.php";
+if (!isset($_POST['submit'])) {
+    header('Location: ../registro.php');
+    exit;
+}
 
+$username = trim($_POST['user'] ?? '');
+$password = $_POST['password'] ?? '';
+$nombre   = trim($_POST['nombre'] ?? '');
 
+if ($username === '' || $password === '' || $nombre === '') {
+    echo '<p class="text-danger">Todos los campos son requeridos.</p>';
+    echo '<button class="btn btn-danger" onclick="window.history.back()">Regresar</button>';
+    exit;
+}
 
-    if (isset($_POST["submit"])) {
-        $username = $_POST['user'];
-        $password = $_POST['password'];
-        $options = array("cost" => 4);
-        $hashPassword = password_hash($password, PASSWORD_BCRYPT, $options);
-        $nombre = $_POST['nombre'];
-      
+// Verificar duplicado con prepared statement
+$check = $db->prepare('SELECT id FROM users WHERE username = ?');
+$check->bind_param('s', $username);
+$check->execute();
+$check->store_result();
 
-        if (mysqli_query($db, "INSERT INTO users (username, password, name) 
-    values ('$username', '$hashPassword', '$nombre')")) {
+if ($check->num_rows > 0) {
+    $check->close();
+    echo '<h2>Este usuario ya está registrado</h2>';
+    echo '<button class="btn btn-danger" onclick="window.history.back()">Regresar</button>';
+    exit;
+}
+$check->close();
 
-            echo "
-                <script>
-                    alert('Registrado...');
-                
-                        window.location.href = '../index.php';
-                  
-            </script>
-                ";
-        } else {
-            $compara = $db->query("SELECT EXISTS (SELECT username FROM users WHERE username='$username');");
-            $row = mysqli_fetch_row($compara);
+$hashPassword = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
 
-            if ($row[0] == "1") {
-                echo
-                "
-                    <h2>Este usario ya esta registrado</h2>
-                    <button class='btn btn-danger' onclick='window.history.back()'>Regresar</button>
-                ";
-            }
-        }
-    }
+$stmt = $db->prepare('INSERT INTO users (username, password, name) VALUES (?,?,?)');
+$stmt->bind_param('sss', $username, $hashPassword, $nombre);
 
-    ?>
-
-
+if ($stmt->execute()) {
+    $stmt->close();
+    echo '<script>alert("Registrado..."); window.location.href = "../index.php";</script>';
+} else {
+    error_log('Error al registrar usuario: ' . $db->error);
+    echo '<p class="text-danger">Error al registrar. Intenta de nuevo.</p>';
+    echo '<button class="btn btn-danger" onclick="window.history.back()">Regresar</button>';
+}
+?>
 </body>
-
 </html>

@@ -1,26 +1,24 @@
 <?php
-error_reporting(0);
-//fetch.php
-// include("conexion/config.php");
-$t = $_GET["trata"];
-$c = $_GET["cedula"];
+require_once __DIR__ . '/../core/Auth.php';
+include __DIR__ . '/../conexion/config.php';
 
-$saldo = "SELECT * from pago where id = (select max(id) from pago where tratamiento ='".$t."' AND cedula = '".$c."')";
+$t = $_GET['trata']  ?? '';
+$c = $_GET['cedula'] ?? '';
 
-$result = $db->query($saldo);
+$stmt = $db->prepare(
+    'SELECT * FROM pago WHERE id = (SELECT MAX(id) FROM pago WHERE tratamiento = ? AND cedula = ?)'
+);
+$stmt->bind_param('ss', $t, $c);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    // output data of each row
     while ($row = $result->fetch_assoc()) {
-        echo '
-        <label for="">Saldo</label>
-        <input type="text" required class="form-control border" value=' . $row["saldo"] . ' autocomplete="off" name="saldo">';
+        echo '<label for="">Saldo</label>
+        <input type="text" required class="form-control border" value="' . h((string)$row['saldo']) . '" autocomplete="off" name="saldo">';
     }
 } else {
-    echo '
-    <label for="">Saldo</label>
-    <input type="text" required class="form-control border" autocomplete="off" value="0" name="saldo">
-    ';
+    echo '<label for="">Saldo</label>
+    <input type="text" required class="form-control border" autocomplete="off" value="0" name="saldo">';
 }
-$db->close();
-?>
+$stmt->close();

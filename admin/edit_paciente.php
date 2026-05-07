@@ -1,14 +1,7 @@
 <?php
-// Solo se permite el ingreso con el inicio de sesion.
-session_start();
-// Si el usuario no se ha logueado se le regresa al inicio.
-if (!isset($_SESSION['loggedin'])) {
-  header('Location: login.php');
-  exit;
-
-  $dni = $_SESSION['id'];
-}
-
+require_once __DIR__ . '/core/Auth.php';
+require_once __DIR__ . '/core/Csrf.php';
+Auth::require();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,53 +36,51 @@ if (!isset($_SESSION['loggedin'])) {
             <div class="container mt-5">
                 <div class="text-start">
                     <?php
-                    // error_reporting(0);
-                    $id = $_GET["id"];
-                    $select = "SELECT * from pacientes WHERE id = $id";
-                    $result = $db->query($select);
-                    
-                    if ($result->num_rows > 0) {
-                        // output data of each row
-                        while ($row = $result->fetch_assoc()) {
-                            echo '
+                    $id = (int)($_GET['id'] ?? 0);
+                    $stmt = $db->prepare('SELECT * FROM pacientes WHERE id = ?');
+                    $stmt->bind_param('i', $id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
 
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) { ?>
                             <form method="post" action="functions/edit_paciente.php">
+                            <?= Csrf::field() ?>
                             <label for="id_nombre">Nombre</label>
-                            <input type="text" class="mb-1 form-control border border-primary" name="nombre" value="' . $row["nombre"] . '">
-    
+                            <input type="text" class="mb-1 form-control border border-primary" name="nombre" value="<?= h($row['nombre']) ?>">
+
                             <label for="id_apellido">Apellido</label>
-                            <input type="text" class="mb-1 form-control border border-primary" name="apellido" value="' . $row["apellido"] . '">
-    
+                            <input type="text" class="mb-1 form-control border border-primary" name="apellido" value="<?= h($row['apellido']) ?>">
+
                             <label for="id_cedula">Cedula</label>
-                            <input type="text" class="mb-1 form-control border border-primary" name="cedula" value="' . $row["cedula"] . '">
-    
+                            <input type="text" class="mb-1 form-control border border-primary" name="cedula" value="<?= h($row['cedula']) ?>">
+
                             <label for="id_direccion">Direccion</label>
-                            <input type="text" class="mb-1 form-control border border-primary" name="direccion" value="' . $row["direccion"] . '">
-    
+                            <input type="text" class="mb-1 form-control border border-primary" name="direccion" value="<?= h($row['direccion']) ?>">
+
                             <label for="id_telefono">Telefono</label>
-                            <input type="text" class="mb-1 form-control border border-primary" name="telefono" value="' . $row["telefono"] . '">
-    
+                            <input type="text" class="mb-1 form-control border border-primary" name="telefono" value="<?= h($row['telefono']) ?>">
+
                             <label for="id_email">Email</label>
-                            <input type="text" class="mb-1 form-control border border-primary" name="email" value="' . $row["email"] . '">
-    
+                            <input type="text" class="mb-1 form-control border border-primary" name="email" value="<?= h($row['email']) ?>">
+
                             <label for="id_ocupacion">Ocupacion</label>
-                            <input type="text" class="mb-1 form-control border border-primary" name="ocupacion" value="' . $row["ocuapacion"] . '">
-    
+                            <input type="text" class="mb-1 form-control border border-primary" name="ocupacion" value="<?= h($row['ocuapacion']) ?>">
+
                             <label for="id_edad">Edad</label>
-                            <input type="text" class="mb-1 form-control border border-primary" name="edad" value="' . $row["edad"] . '">
-                           
-                            <input type="text" class="mb-1 form-control border border-primary" style="display:none" name="id" value="' . $row["id"] . '">
-                            
+                            <input type="text" class="mb-1 form-control border border-primary" name="edad" value="<?= h($row['edad']) ?>">
+
+                            <input type="hidden" name="id" value="<?= h((string)$row['id']) ?>">
+
                             <div class="text-center mt-4">
                                 <input type="submit" name="update" class="btn btn-success" value="actualizar">
                             </div>
                             </form>
-                            ';
-                        }
+                        <?php }
                     } else {
-                        echo "0 results";
+                        echo '<p>Paciente no encontrado.</p>';
                     }
-
+                    $stmt->close();
                     ?>
                 </div>
             </div>

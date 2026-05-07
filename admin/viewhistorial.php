@@ -1,57 +1,44 @@
 <?php
-error_reporting(0);
-//fetch.php
-// include("conexion/config.php");
-$connect = mysqli_connect("mydbserver.mysql.database.azure.com", "mrdavis", "A@TPT2Q4hWgmw", "clinica_anguizola");
+require_once __DIR__ . '/core/Auth.php';
+include __DIR__ . '/conexion/config.php';
+
 $output = '';
-if(isset($_POST["query"]))
-{
- $search = mysqli_real_escape_string($connect, $_POST["query"]);
- $query = "SELECT * FROM pago WHERE cedula LIKE '%".$search."%' OR nombre LIKE '%".$search."%'";
-}
-else
-{
- $query = "SELECT * FROM pago ORDER BY fecha DESC";
-}
-$result = mysqli_query($connect, $query);
-if(mysqli_num_rows($result) > 0)
-{
- $output .= '
-  <div class="table-responsive">
-   <table class="table table bordered">
-    <tr>
-    <td>Id</td>
-    <th>Fecha</th>
-    <th>Nombre</th>
-    <th>Cedula</th>
-    <th>Cantidad pagada</th>
-    <th>Tipo de pago</th>
-    <th>Saldo</th>
-    <th>Tratamiento</th>
-    <th>Nota</th>
-    </tr>
- ';
- while($row = mysqli_fetch_array($result))
- {
-  $output .= '
-   <tr>
-    <td>'.$row["id"].'</td>
-    <td>'.$row["fecha"].'</td>
-    <td>'.$row["nombre"].' '.$row["apellido"].'</td>
-    <td>'.$row["cedula"].'</td>
-    <td>B/. '.$row["monto"].'</td>
-    <td>'.$row["tipo_de_pago"].'</td>
-    <td>B/. '.$row["saldo"].'</td>
-    <td>'.$row["tratamiento"].'</td>
-    <td>'.$row["nota"].'</td>
-   </tr>
-  ';
- }
- echo $output;
-}
-else
-{
- echo 'Data Not Found';
+
+if (isset($_POST['query'])) {
+    $search = '%' . $_POST['query'] . '%';
+    $stmt = $db->prepare(
+        'SELECT * FROM pago WHERE cedula LIKE ? OR nombre LIKE ?'
+    );
+    $stmt->bind_param('ss', $search, $search);
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    $result = $db->query('SELECT * FROM pago ORDER BY fecha DESC');
 }
 
-?>
+if ($result->num_rows > 0) {
+    $output .= '<div class="table-responsive">
+   <table class="table table-bordered">
+    <tr>
+    <td>Id</td><th>Fecha</th><th>Nombre</th><th>Cedula</th>
+    <th>Cantidad pagada</th><th>Tipo de pago</th><th>Saldo</th>
+    <th>Tratamiento</th><th>Nota</th>
+    </tr>';
+    while ($row = $result->fetch_assoc()) {
+        $output .= '<tr>
+    <td>' . h((string)$row['id']) . '</td>
+    <td>' . h($row['fecha']) . '</td>
+    <td>' . h($row['nombre']) . '</td>
+    <td>' . h($row['cedula']) . '</td>
+    <td>B/. ' . h((string)$row['monto']) . '</td>
+    <td>' . h($row['tipo_de_pago']) . '</td>
+    <td>B/. ' . h((string)$row['saldo']) . '</td>
+    <td>' . h($row['tratamiento']) . '</td>
+    <td>' . h($row['nota']) . '</td>
+   </tr>';
+    }
+    $output .= '</table></div>';
+    echo $output;
+} else {
+    echo 'Data Not Found';
+}

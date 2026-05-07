@@ -1,15 +1,24 @@
 <?php
-include_once("admin/conexion/config.php");
-// include_once('Main/html/conexion/config.php');
+session_start();
+require_once __DIR__ . '/admin/core/env.php';
+require_once __DIR__ . '/admin/core/Csrf.php';
+require_once __DIR__ . '/admin/core/Database.php';
+loadEnv(__DIR__ . '/.env');
+Csrf::verify();
 
-$fecha = $_POST['fecha'];
-$hora = $_POST['hora'];
-$nombre = $_POST['nombre'];
-$asunto = $_POST['asunto'];
-$doctor = $_POST['doctor'];
+$db = Database::get();
 
-$sql = "insert into citas_tabla (fecha_de_cita,hora_de_cita,nombre_paciente,asunto_de_la_cita,doctor) values ('$fecha', '$hora','$nombre','$asunto','$doctor')";
-mysqli_query($db,$sql);
+$stmt = $db->prepare(
+    'INSERT INTO citas_tabla (fecha_de_cita, hora_de_cita, nombre_paciente, asunto_de_la_cita, doctor)
+     VALUES (?, ?, ?, ?, ?)'
+);
+$fecha   = $_POST['fecha']   ?? '';
+$hora    = $_POST['hora']    ?? '';
+$nombre  = $_POST['nombre']  ?? '';
+$asunto  = $_POST['asunto']  ?? '';
+$doctor  = $_POST['doctor']  ?? '';
+$stmt->bind_param('sssss', $fecha, $hora, $nombre, $asunto, $doctor);
+$stmt->execute();
+$stmt->close();
 
-header("location: index.php?guardado")
-?>
+header('Location: index.php?guardado');

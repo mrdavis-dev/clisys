@@ -1,41 +1,30 @@
 <?php
-error_reporting(0);
-//fetch.php
-include("conexion/config.php");
+require_once __DIR__ . '/core/Auth.php';
+include __DIR__ . '/conexion/config.php';
+
 $output = '';
-if(isset($_POST["query"]))
-{
-  $search = mysqli_real_escape_string($db, $_POST["query"]);
-  $query = "SELECT * FROM pacientes WHERE cedula LIKE '%".$search."%' ";
-}
-else
-{
- // $query = "SELECT * FROM pacientes";
-}
-$result = mysqli_query($db, $query);
-if(mysqli_num_rows($result) > 0)
-{
- $output .= '
 
- ';
- while($row = mysqli_fetch_array($result))
- {
-  $output .= '
+if (isset($_POST['query'])) {
+    $search = '%' . $_POST['query'] . '%';
+    $stmt = $db->prepare('SELECT * FROM pacientes WHERE cedula LIKE ?');
+    $stmt->bind_param('s', $search);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $output .= '
   <label for="">Correo:</label>
-  <input type="email" readonly="readonly" required class="form-control border" value='.$row["email"].' name="email" id="email">
+  <input type="email" readonly required class="form-control border" value="' . h($row['email']) . '" name="email" id="email">
 
   <label for="">Nombre del cliente</label>
-  <input type="text" readonly="readonly" required class="form-control border" value='.$row["nombre"].' name="nombre" id="names_cli">
+  <input type="text" readonly required class="form-control border" value="' . h($row['nombre']) . '" name="nombre" id="names_cli">
 
   <label for="">Apellido del cliente</label>
-  <input type="text" readonly="readonly" required class="form-control border" value='.$row["apellido"].' name="apellido" id="names_apellido">
+  <input type="text" readonly required class="form-control border" value="' . h($row['apellido']) . '" name="apellido" id="names_apellido">
   ';
- }
- echo $output;
+        }
+        echo $output;
+    }
+    $stmt->close();
 }
-else
-{
- // echo 'Data Not Found';
-}
-?>

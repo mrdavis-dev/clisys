@@ -1,3 +1,9 @@
+<?php
+session_start();
+require_once __DIR__ . '/admin/core/env.php';
+require_once __DIR__ . '/admin/core/Csrf.php';
+loadEnv(__DIR__ . '/.env');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,6 +32,7 @@
             </div>
 
             <form action="insert_exterior.php" method="POST">
+                    <?= Csrf::field() ?>
                     
                         <div class="container mx-auto w-100 ps-5 pe-5 mb-4">
                             <label for="fecha">Fecha de cita:</label>

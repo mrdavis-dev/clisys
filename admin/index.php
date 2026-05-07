@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/core/Csrf.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +26,7 @@
   </div>
   <div class="container animated fadeIn delay-1s">
     <form method="POST" action="functions/login.php">
+      <?= Csrf::field() ?>
       <div id="div_login row">
         <div class="container shadow p-3 col-7">
           <legend class="m-2">Usuario</legend>
