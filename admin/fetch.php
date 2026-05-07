@@ -2,18 +2,22 @@
 require_once __DIR__ . '/core/Auth.php';
 include __DIR__ . '/conexion/config.php';
 
-$output = '';
+$output    = '';
+$clinic_id = Tenant::id();
 
 if (isset($_POST['query'])) {
     $search = '%' . $_POST['query'] . '%';
     $stmt = $db->prepare(
-        'SELECT * FROM pacientes WHERE cedula LIKE ? OR nombre LIKE ?'
+        'SELECT * FROM pacientes WHERE clinic_id = ? AND (cedula LIKE ? OR nombre LIKE ?)'
     );
-    $stmt->bind_param('ss', $search, $search);
+    $stmt->bind_param('iss', $clinic_id, $search, $search);
     $stmt->execute();
     $result = $stmt->get_result();
 } else {
-    $result = $db->query('SELECT * FROM pacientes');
+    $stmt = $db->prepare('SELECT * FROM pacientes WHERE clinic_id = ?');
+    $stmt->bind_param('i', $clinic_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 }
 
 if ($result->num_rows > 0) {
@@ -32,7 +36,7 @@ if ($result->num_rows > 0) {
     <td>' . h($row['direccion']) . '</td>
     <td>' . h($row['telefono']) . '</td>
     <td>' . h($row['email']) . '</td>
-    <td>' . h($row['ocuapacion']) . '</td>
+    <td>' . h($row['ocupacion']) . '</td>
    </tr>';
     }
     $output .= '</table></div>';

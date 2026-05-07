@@ -33,9 +33,10 @@ if ($username === '' || $password === '' || $nombre === '') {
     exit;
 }
 
-// Verificar duplicado con prepared statement
-$check = $db->prepare('SELECT id FROM users WHERE username = ?');
-$check->bind_param('s', $username);
+// Verificar duplicado con prepared statement (por clínica)
+$clinic_id = Tenant::id();
+$check = $db->prepare('SELECT id FROM users WHERE clinic_id = ? AND username = ?');
+$check->bind_param('is', $clinic_id, $username);
 $check->execute();
 $check->store_result();
 
@@ -48,9 +49,9 @@ if ($check->num_rows > 0) {
 $check->close();
 
 $hashPassword = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
-
-$stmt = $db->prepare('INSERT INTO users (username, password, name) VALUES (?,?,?)');
-$stmt->bind_param('sss', $username, $hashPassword, $nombre);
+// $clinic_id already set above for duplicate check
+$stmt = $db->prepare('INSERT INTO users (clinic_id, username, password, name) VALUES (?,?,?,?)');
+$stmt->bind_param('isss', $clinic_id, $username, $hashPassword, $nombre);
 
 if ($stmt->execute()) {
     $stmt->close();

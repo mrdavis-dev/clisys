@@ -1,8 +1,13 @@
 <?php
 session_start();
 require_once __DIR__ . '/admin/core/env.php';
+require_once __DIR__ . '/admin/core/Auth.php';   // defines h()
 require_once __DIR__ . '/admin/core/Csrf.php';
+require_once __DIR__ . '/admin/core/Database.php';
+require_once __DIR__ . '/admin/core/Tenant.php';
 loadEnv(__DIR__ . '/.env');
+$db = Database::get();
+Tenant::load($db);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,9 +55,17 @@ loadEnv(__DIR__ . '/.env');
                             <label for="">Doctor de preferencia:</label>
                             <select name="doctor" required class="form-control" id="">
                                 <option value="">Seleccione un Doctor</option>
-                                <option value="Dr. Júlio Anguizola Vial">Dr. Júlio Anguizola Vial</option>
-                                <option value="Dr. Miguel Anguizola Severino">Dr. Miguel Anguizola Severino</option>
-                                <option value="Dr. Amira Martínez de Anguizola">Dr. Amira Martínez de Anguizola</option>
+                                <?php
+                                $cid_pub = Tenant::id();
+                                $stmt_pub = $db->prepare('SELECT name FROM staff WHERE clinic_id = ? AND active = 1 ORDER BY name');
+                                $stmt_pub->bind_param('i', $cid_pub);
+                                $stmt_pub->execute();
+                                $res_pub = $stmt_pub->get_result();
+                                while ($doc_pub = $res_pub->fetch_assoc()) {
+                                    echo '<option value="' . h($doc_pub['name']) . '">' . h($doc_pub['name']) . '</option>';
+                                }
+                                $stmt_pub->close();
+                                ?>
                             </select>
                         </div>
                     

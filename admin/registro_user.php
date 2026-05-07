@@ -53,9 +53,11 @@ Auth::require();
           <div class="container-fluid centrar">
             <?php
             // include("conexion/config.php");
-            $query = "SELECT id, username, name FROM users";
-            $result = mysqli_query($db, $query)
-              or die('Error querying database');
+            $clinic_id = Tenant::id();
+            $stmt_users = $db->prepare('SELECT id, username, name FROM users WHERE clinic_id = ?');
+            $stmt_users->bind_param('i', $clinic_id);
+            $stmt_users->execute();
+            $result = $stmt_users->get_result();
 
             $count = mysqli_num_rows($result);
             ?>
@@ -75,7 +77,7 @@ Auth::require();
                       </tr>
                       <?php
 
-                      while ($row = mysqli_fetch_array($result)) {
+                      while ($row = $result->fetch_assoc()) {
                       ?>
 
                         <tr>
@@ -98,10 +100,11 @@ Auth::require();
 
                 if (isset($_POST['delete']) && !empty($_POST['checkbox'])) {
                   Csrf::verify();
-                  $stmt = $db->prepare('DELETE FROM users WHERE id = ?');
+                  $clinic_id_del = Tenant::id();
+                  $stmt = $db->prepare('DELETE FROM users WHERE id = ? AND clinic_id = ?');
                   foreach ($_POST['checkbox'] as $del_id) {
                     $id_int = (int)$del_id;
-                    $stmt->bind_param('i', $id_int);
+                    $stmt->bind_param('ii', $id_int, $clinic_id_del);
                     $stmt->execute();
                   }
                   $stmt->close();

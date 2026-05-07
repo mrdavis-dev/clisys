@@ -2,13 +2,16 @@
 require_once __DIR__ . '/../core/Auth.php';
 include __DIR__ . '/../conexion/config.php';
 
-$t = $_GET['trata']  ?? '';
-$c = $_GET['cedula'] ?? '';
+$t         = $_GET['trata']  ?? '';
+$c         = $_GET['cedula'] ?? '';
+$clinic_id = Tenant::id();
 
 $stmt = $db->prepare(
-    'SELECT * FROM pago WHERE id = (SELECT MAX(id) FROM pago WHERE tratamiento = ? AND cedula = ?)'
+    'SELECT * FROM pago
+     WHERE clinic_id = ?
+       AND id = (SELECT MAX(id) FROM pago WHERE clinic_id = ? AND tratamiento = ? AND cedula = ?)'
 );
-$stmt->bind_param('ss', $t, $c);
+$stmt->bind_param('iiss', $clinic_id, $clinic_id, $t, $c);
 $stmt->execute();
 $result = $stmt->get_result();
 

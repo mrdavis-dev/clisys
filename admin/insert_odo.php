@@ -5,6 +5,7 @@ Csrf::verify();
 require_once __DIR__ . '/conexion/config.php';
 
 if (count($_FILES) > 0 && is_uploaded_file($_FILES['userImage']['tmp_name'])) {
+    $clinic_id = Tenant::id();
     $cedula    = $_POST['search'] ?? '';
     $consulta  = $_POST['consul'] ?? '';
     $imageData = file_get_contents($_FILES['userImage']['tmp_name']);
@@ -13,10 +14,10 @@ if (count($_FILES) > 0 && is_uploaded_file($_FILES['userImage']['tmp_name'])) {
     $null      = null;
 
     $stmt = $db->prepare(
-        'INSERT INTO consulta (cedula, tratamiento, imageType, imageData) VALUES (?, ?, ?, ?)'
+        'INSERT INTO consulta (clinic_id, cedula, tratamiento, imageType, imageData) VALUES (?, ?, ?, ?, ?)'
     );
-    $stmt->bind_param('sssb', $cedula, $consulta, $mime, $null);
-    $stmt->send_long_data(3, $imageData);
+    $stmt->bind_param('isssb', $clinic_id, $cedula, $consulta, $mime, $null);
+    $stmt->send_long_data(4, $imageData);
     $stmt->execute();
     $stmt->close();
     header('Location: odontograma.php');

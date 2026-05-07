@@ -14,17 +14,18 @@ if (isset($_POST['update'])) {
     $ocupacion = $_POST['ocupacion'] ?? '';
     $edad      = $_POST['edad']      ?? '';
     $idpost    = (int)($_POST['id']  ?? 0);
+    $clinic_id = Tenant::id();
 
     $stmt = $db->prepare(
         'UPDATE pacientes
          SET nombre = ?, apellido = ?, cedula = ?, direccion = ?,
-             telefono = ?, email = ?, ocuapacion = ?, edad = ?
-         WHERE id = ?'
+             telefono = ?, email = ?, ocupacion = ?, edad = ?
+         WHERE id = ? AND clinic_id = ?'
     );
     $stmt->bind_param(
-        'ssssssssi',
+        'ssssssssii',
         $nombre, $apellido, $cedula, $direccion,
-        $telefono, $email, $ocupacion, $edad, $idpost
+        $telefono, $email, $ocupacion, $edad, $idpost, $clinic_id
     );
     $stmt->execute();
     $stmt->close();

@@ -63,8 +63,9 @@ Auth::require();
 						<?php
 						if (isset($_POST['delete'])) {
 							Csrf::verify();
-							$stmt = $db->prepare('DELETE FROM pacientes WHERE id = ?');
-							$stmt->bind_param('i', $_POST['emp_id']);
+							$clinic_id = Tenant::id();
+							$stmt = $db->prepare('DELETE FROM pacientes WHERE id = ? AND clinic_id = ?');
+							$stmt->bind_param('ii', $_POST['emp_id'], $clinic_id);
 							$stmt->execute();
 							$stmt->close();
 						}

@@ -2,12 +2,15 @@
 require_once __DIR__ . '/core/Auth.php';
 include __DIR__ . '/conexion/config.php';
 
-$output = '';
+$output    = '';
+$clinic_id = Tenant::id();
 
 if (isset($_POST['query'])) {
     $search = '%' . $_POST['query'] . '%';
-    $stmt = $db->prepare('SELECT * FROM pacientes WHERE cedula LIKE ?');
-    $stmt->bind_param('s', $search);
+    $stmt = $db->prepare(
+        'SELECT * FROM pacientes WHERE clinic_id = ? AND cedula LIKE ?'
+    );
+    $stmt->bind_param('is', $clinic_id, $search);
     $stmt->execute();
     $result = $stmt->get_result();
 
