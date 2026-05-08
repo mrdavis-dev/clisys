@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/core/Csrf.php';
+Csrf::generate();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +13,7 @@ require_once __DIR__ . '/core/Csrf.php';
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
 	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
@@ -25,14 +27,14 @@ require_once __DIR__ . '/core/Csrf.php';
     </div>
   </div>
   <div class="container animated fadeIn delay-1s">
-    <form method="POST" action="functions/login.php">
+    <form method="POST" action="functions/login.php" data-validate>
       <?= Csrf::field() ?>
       <div id="div_login row">
         <div class="container shadow p-3 col-7">
-          <legend class="m-2">Usuario</legend>
+          <label for="txt_uname" class="m-2">Usuario</label>
           <input type="text" class="form-control border" id="txt_uname" name="username">
-          <legend class="m-2">Contraseña</legend>
-          <input type="password" class="form-control border" id="txt_uname" name="password">
+          <label for="txt_password" class="m-2">Contraseña</label>
+          <input type="password" class="form-control border" id="txt_password" name="password">
           <div class="container row justify-content-center">
             <input type="submit" value="Ingresar" class="btn btn-primary m-4 col-5" name="but_submit" id="but_submit">
             <input type="reset" value="Borrar" class="btn btn-secondary m-4 col-5">

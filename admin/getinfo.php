@@ -17,12 +17,14 @@ Auth::require();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
+    <?php include 'partials/skip_nav.php'; ?>
     <div class="wrapper d-flex align-items-stretch">
         <?php
         include("menu.php");
@@ -30,11 +32,18 @@ Auth::require();
 
         <!-- Page Content  -->
         <div id="content" class="p-4 p-md-5 pt-5 ">
+            <?php
+            $breadcrumb = [
+                ['label' => 'Inicio',       'url' => 'inicio.php'],
+                ['label' => 'Registrar pago'],
+            ];
+            include 'partials/breadcrumb.php';
+            ?>
             <div class=" animated fadeIn container-fluid centrar p-1 mb-3 border-bottom">
-                <h3 class="display-3">Ingrese los datos</h3>
+                <h1 class="page-title">Ingrese los datos</h1>
                 <p class="text-dark">"Los datos ingresados son para calcular el ultimo saldo del paceinte en un tratamiento especifico "</p>
             </div>
-            <form action="pagos.php" method="get">
+            <form action="pagos.php" method="get" data-validate>
                 <div class="container">
                     <div class="">
 
@@ -42,6 +51,7 @@ Auth::require();
 
                             <label for="">Cédula del cliente</label>
                             <input type="text" required class="form-control border" autocomplete="off" name="cedula" id="ced">
+                            <span id="search-spin" class="d-none ml-2 text-muted" aria-label="Buscando..."><i class="fa fa-spinner fa-spin"></i></span>
 
                             <div id="result"></div>
 
@@ -80,32 +90,8 @@ Auth::require();
     </div>
     <script src="js/main.js"></script>
     <script>
-        $(document).ready(function() {
-
-            load_data();
-
-            function load_data(query) {
-                $.ajax({
-                    url: "get_info_pago.php",
-                    method: "POST",
-                    data: {
-                        query: query
-                    },
-                    success: function(data) {
-                        $('#result').html(data);
-                    }
-                });
-            }
-            $('#ced').keyup(function() {
-                var search = $(this).val();
-                if (search != '') {
-                    load_data(search);
-                } else {
-                    load_data();
-                }
-            });
-
-
+        $(function () {
+            ajaxSearch({ url: 'get_info_pago.php', inputId: 'ced', resultId: 'result', spinId: 'search-spin' });
         });
     </script>
 </body>

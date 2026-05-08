@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../core/Csrf.php';
 require_once __DIR__ . '/../core/Audit.php';
-session_start();
 Csrf::verify();
 require_once __DIR__ . '/../conexion/config.php';
 

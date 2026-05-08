@@ -1,27 +1,129 @@
-:root{
-    --color-1:rgb(92, 182, 172);
-    --color-2:#8B8B8B;
-    --color-3:#d4d4d4;
+:root {
+    /* Brand */
+    --color-primary:     #5CB6AC;
+    --color-primary-dk:  #4a9d94;
+    --color-secondary:   #8B8B8B;
+    --color-muted:       #d4d4d4;
+
+    /* Sidebar */
+    --sidebar-bg:         var(--color-primary);
+    --sidebar-link:       rgba(255, 255, 255, 0.85);
+    --sidebar-active-bg:  rgba(255, 255, 255, 0.15);
+
+    /* Semantic */
+    --color-success: #28a745;
+    --color-danger:  #dc3545;
+    --color-warning: #ffc107;
+
+    /* Typography */
+    --font-body: 'Poppins', sans-serif;
+
+    /* Layout */
+    --page-header-size: 1.5rem;
+    --table-max-height:  22rem;
+
+    /* Legacy aliases (kept for backward compat) */
+    --color-1: #5CB6AC;
+    --color-2: #8B8B8B;
+    --color-3: #d4d4d4;
 }
 
-.centrar{
+/* ── Utilities ──────────────────────────────────────────── */
+.centrar { text-align: center; }
+
+.sombra { box-shadow: 7px 7px 6px -5px rgba(0, 0, 0, 0.75); }
+
+.titulo::after { background-image: url("../img/logo-bw.png"); }
+
+.numbers  { margin-right: 16px; margin-left: 16px; }
+.numbers2 { margin-right: 15px; margin-left: 15px; }
+
+/* ── Page header ────────────────────────────────────────── */
+.page-header {
+    padding-top: .5rem;
+}
+.page-title {
+    font-size: var(--page-header-size);
+    font-weight: 600;
+    margin-bottom: 0;
+    color: #333;
+}
+
+/* ── Responsive table scroll ────────────────────────────── */
+.table-scroll {
+    max-height: var(--table-max-height);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 767.98px) {
+    .table-scroll { max-height: none; overflow-y: visible; }
+}
+
+/* ── Empty state ────────────────────────────────────────── */
+.empty-state {
+    padding: 3rem 1rem;
     text-align: center;
+    color: var(--color-secondary);
+}
+.empty-state .fa {
+    font-size: 2.5rem;
+    margin-bottom: .75rem;
+}
+.empty-state p { margin: 0; }
+
+/* ── Flash toast ────────────────────────────────────────── */
+.flash-toast {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .75rem 1.25rem;
+    border-radius: .375rem;
+    color: #fff;
+    font-size: .9rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    max-width: 360px;
+    animation: slideInRight .25s ease;
+}
+.flash-toast--success { background: var(--color-success); }
+.flash-toast--danger  { background: var(--color-danger); }
+.flash-toast__close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 0 0 .5rem;
+}
+@keyframes slideInRight {
+    from { transform: translateX(2rem); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
 }
 
-.sombra{
-    box-shadow: 7px 7px 6px -5px rgba(0,0,0,0.75);
+/* ── Skip-to-main ───────────────────────────────────────── */
+.skip-to-main {
+    position: absolute;
+    top: -100%;
+    left: .5rem;
+    z-index: 10000;
+    padding: .5rem 1rem;
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: 0 0 .25rem .25rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: top .1s;
 }
+.skip-to-main:focus { top: 0; outline: 3px solid #fff; }
 
-.titulo::after{
-    background-image: url("../img/logo-bw.png");
+/* ── Focus ring (brand colour) ──────────────────────────── */
+*:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
 }
-
-.numbers{
-    margin-right: 16px;
-    margin-left: 16px;
-}
-.numbers2{
-    margin-right: 15px;
-    margin-left: 15px;
-}
-
+*:focus:not(:focus-visible) { outline: none; }

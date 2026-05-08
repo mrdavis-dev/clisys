@@ -44,5 +44,5 @@ if ($result->num_rows > 0) {
     $output .= '</table></div>';
     echo $output;
 } else {
-    echo 'Data Not Found';
+    echo '<div class="empty-state"><i class="fa fa-folder-open-o fa-2x mb-3 d-block" aria-hidden="true"></i><p>No hay registros de pago para mostrar.</p></div>';
 }

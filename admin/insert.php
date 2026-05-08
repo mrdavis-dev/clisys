@@ -22,6 +22,6 @@ if (isset($_POST['save'])) {
     $new_id = (string)$db->insert_id;
     $stmt->close();
     Audit::log('insert_cita', 'citas_tabla', $new_id);
-    header('Location: inicio.php?guardado');
+    header('Location: inicio.php?ok=cita');
     exit;
 }

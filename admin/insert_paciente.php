@@ -9,7 +9,7 @@ require_once __DIR__ . '/conexion/config.php';
 if (isset($_POST['submit'])) {
     // Enforce plan patient limit before inserting
     if (!Plan::withinLimit('patients')) {
-        header('Location: inicio.php?limit=patients');
+        header('Location: inicio.php?err=limit_patients');
         exit;
     }
 
@@ -58,6 +58,6 @@ if (isset($_POST['submit'])) {
     $new_id = (string)$db->insert_id;
     $stmt->close();
     Audit::log('insert_patient', 'pacientes', $new_id);
-    header('Location: inicio.php?guardado');
+    header('Location: inicio.php?ok=paciente');
     exit;
 }

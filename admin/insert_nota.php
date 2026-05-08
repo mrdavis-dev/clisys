@@ -14,7 +14,7 @@ $fecha     = trim($_POST['fecha']     ?? '');
 $contenido = trim($_POST['contenido'] ?? '');
 
 if ($cedula === '' || $fecha === '' || $contenido === '') {
-    header('Location: notas.php?error=empty');
+    header('Location: notas.php?err=empty_note');
     exit;
 }
 
@@ -32,5 +32,5 @@ $stmt->close();
 
 Audit::log('insert_note', 'clinic_notes', $new_id);
 
-header('Location: notas.php');
+header('Location: notas.php?ok=nota');
 exit;

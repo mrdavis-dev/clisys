@@ -19,6 +19,7 @@ Auth::require();
 
 	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Detalles</title>
@@ -26,12 +27,21 @@ Auth::require();
 
 <body>
     <?php
-    include("menu.php");
+    include('partials/skip_nav.php'); ?>
+<?php include("menu.php");
     ?>
 
     <div id="content" class="p-4 p-md-5 pt-5 ">
+        <?php
+        $breadcrumb = [
+            ['label' => 'Inicio',    'url' => 'inicio.php'],
+            ['label' => 'Pacientes', 'url' => 'pacientes.php'],
+            ['label' => 'Editar paciente'],
+        ];
+        include 'partials/breadcrumb.php';
+        ?>
         <div class=" animated fadeIn container centrar">
-            <h2 class="display-3 border-bottom">Información de paciente</h2>
+            <h1 class="page-title border-bottom pb-2">Información de paciente</h1>
 
             <div class="container mt-5">
                 <div class="text-start">

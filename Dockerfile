@@ -35,4 +35,6 @@ RUN echo '<Directory /var/www/html>\n\
 </Directory>' > /etc/apache2/conf-available/app.conf \
     && a2enconf app
 
+RUN echo "output_buffering = On" > /usr/local/etc/php/conf.d/buffering.ini
+
 EXPOSE 80

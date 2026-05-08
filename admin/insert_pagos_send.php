@@ -259,7 +259,7 @@ $mail->isHTML(true);                                  // Set email format to HTM
 
 //desactiva hasta aqui
 
-    header("location: historial.php");
+    header("Location: historial.php?ok=pago");
 }
 
 

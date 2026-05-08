@@ -16,12 +16,15 @@ Auth::require();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 	<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
 	<link rel="stylesheet" href="css/main.css">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-		<div class="wrapper d-flex align-items-stretch">
+<?php include('partials/flash.php'); ?>
+		<?php include 'partials/skip_nav.php'; ?>
+    <div class="wrapper d-flex align-items-stretch">
 <?php 
 include("menu.php");
 ?>
@@ -32,7 +35,7 @@ include("menu.php");
 						<div class="container centrado">
 							<div class="centrar animated fadeIn slow container border-bottom  m-2">
 
-								<p class="display-4"><img src="img/logo-color.png" style="width: 50px"> Clínica Anguizola </p>
+								<p class="page-title"><img src="img/logo-color.png" style="width: 36px"> Clínica Anguizola</p>
 
 							</div>
 							<div class="centrar">
@@ -58,9 +61,9 @@ include("menu.php");
 							$count=mysqli_num_rows($result);
 							?>
 
-              <td><form name="form1" method="post" action="">
+              <td><form name="form1" id="form-delete-citas" method="post" action="">
               <?= Csrf::field() ?>
-              <div class="container " style="overflow-y: scroll; height: 25rem; display: block;">
+              <div class="container table-scroll">
                   <table class="table" >
                       <thead>
                         <tr>
@@ -92,7 +95,7 @@ include("menu.php");
                     </table>
 
               </div>
-                <input class="btn btn-secondary" name="delete" type="submit" value="Borrar">
+                <button type="button" class="btn btn-secondary" data-confirm="true" data-confirm-form="#form-delete-citas" data-confirm-msg="¿Borrar las citas seleccionadas? Esta acción no se puede deshacer.">Borrar</button>
 
 							<?php
 							if (isset($_POST['delete']) && !empty($_POST['checkbox'])) {

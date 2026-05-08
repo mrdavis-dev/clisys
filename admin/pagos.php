@@ -18,12 +18,14 @@ Auth::require();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
+    <?php include 'partials/skip_nav.php'; ?>
     <div class="wrapper d-flex align-items-stretch">
         <?php
         include("menu.php");
@@ -32,9 +34,9 @@ Auth::require();
         <!-- Page Content  -->
         <div id="content" class="p-4 p-md-5 pt-5 ">
             <div class=" animated fadeIn container-fluid centrar p-1 mb-3 border-bottom">
-                <h1 class="display-3">Pagos</h1>
+                <h1 class="page-title">Pagos</h1>
             </div>
-            <form action="insert_pagos_send.php" method="post">
+            <form action="insert_pagos_send.php" method="post" data-validate>
                 <?= Csrf::field() ?>
                 <div class="container">
                     <div class="row">
@@ -44,33 +46,36 @@ Auth::require();
                                 <input type="date" required class="form-control border" name="fecha" id="dia">
 
                                 <?php
-                                echo '
-                                <label for="">Cédula del cliente</label>
-                                <input type="text" required class="form-control border" autocomplete="off" value=' . $_GET["cedula"] . ' name="cedula" id="ced">
+                                $p_cedula   = h($_GET['cedula']   ?? '');
+                                $p_email    = h($_GET['email']    ?? '');
+                                $p_nombre   = h($_GET['nombre']   ?? '');
+                                $p_apellido = h($_GET['apellido'] ?? '');
+                                $p_trata    = h($_GET['trata']    ?? '');
+                                ?>
+                                <label for="ced">Cédula del cliente</label>
+                                <input type="text" required class="form-control border" autocomplete="off" value="<?= $p_cedula ?>" name="cedula" id="ced">
 
-                                <label for="">Correo:</label>
-                                <input type="email" readonly="readonly" required class="form-control border" value=' . $_GET["email"] . ' name="email" id="email">
+                                <label for="email">Correo:</label>
+                                <input type="email" readonly="readonly" required class="form-control border" value="<?= $p_email ?>" name="email" id="email">
 
-                                <label for="">Nombre del cliente</label>
-                                <input type="text" readonly="readonly" required class="form-control border" value=' . $_GET["nombre"] . ' name="nombre" id="names_cli">
+                                <label for="names_cli">Nombre del cliente</label>
+                                <input type="text" readonly="readonly" required class="form-control border" value="<?= $p_nombre ?>" name="nombre" id="names_cli">
 
-                                <label for="">Apellido del cliente</label>
-                                <input type="text" readonly="readonly" required class="form-control border" value=' . $_GET["apellido"] . ' name="apellido" id="names_apellido">
+                                <label for="names_apellido">Apellido del cliente</label>
+                                <input type="text" readonly="readonly" required class="form-control border" value="<?= $p_apellido ?>" name="apellido" id="names_apellido">
 
-                                <label for="">Tipo de pago</label>
-                                <select name="tipo_pago" required class="form-control" id="">
+                                <label for="tipo_pago">Tipo de pago</label>
+                                <select name="tipo_pago" required class="form-control" id="tipo_pago">
                                     <option value="">Seleccione alguno...</option>
                                     <option value="Efectivo">Efectivo</option>
                                     <option value="Cheque">Cheque</option>
                                     <option value="Tarjeta">Tarjeta</option>
-                                    <option value="Tarjeta">Transferencia</option>
+                                    <option value="Transferencia">Transferencia</option>
                                 </select>
 
-                                
-
-                                <label for="">Tratamiento</label>
-                                <input type="text" required class="form-control border" autocomplete="off" value=' . $_GET["trata"] . ' id="trata" name="trata">
-                                    ';
+                                <label for="trata">Tratamiento</label>
+                                <input type="text" required class="form-control border" autocomplete="off" value="<?= $p_trata ?>" id="trata" name="trata">
+                                <?php
 
                                 include("functions/funsaldo.php");
 

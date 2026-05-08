@@ -17,6 +17,7 @@ Auth::require();
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
   <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/main.css">
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -24,7 +25,8 @@ Auth::require();
 
 <body>
 
-  <div class="wrapper d-flex align-items-stretch">
+  <?php include 'partials/skip_nav.php'; ?>
+    <div class="wrapper d-flex align-items-stretch">
     <?php
     include("menu.php");
     ?>
@@ -63,9 +65,9 @@ Auth::require();
             ?>
 
             <td>
-              <form name="form1" method="post" action="registro_user.php">
+              <form name="form1" id="form-delete-users" method="post" action="registro_user.php">
                 <?= Csrf::field() ?>
-                <div class="container " style="overflow-y: scroll; height: 25rem; display: block;">
+                <div class="container table-scroll">
                   <table class="table">
                     <thead>
                       <tr>
@@ -94,7 +96,7 @@ Auth::require();
                   </table>
 
                 </div>
-                <input class="btn btn-secondary" name="delete" type="submit" value="Borrar">
+                <button type="button" class="btn btn-secondary" data-confirm="true" data-confirm-form="#form-delete-users" data-confirm-msg="¿Borrar los usuarios seleccionados?">Borrar</button>
 
                 <?php
 

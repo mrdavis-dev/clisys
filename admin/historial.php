@@ -16,63 +16,25 @@ Auth::require();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 	<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
 	<link rel="stylesheet" href="css/main.css">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-	<div class="wrapper d-flex align-items-stretch" >
-		<nav id="sidebar" class="">
-			<div class="custom-menu">
-				<button type="button" id="sidebarCollapse" class="btn btn-primary">
-					<i class="fa fa-bars"></i>
-					<span class="sr-only">Toggle Menu</span>
-	      		</button>
-        	</div>
-			<div class="p-4">
-
-		  		<h1 style="font-size: calc(20px + 1.1vw); " class="border-bottom"><a href="index.php" class="logo">Clínica Anguizola</a></h1>
-	       	<ul class="list-unstyled components mb-5">
-            <li >
-              <a href="inicio.php"><span class="fa fa-home mr-3"></span> Inicio</a>
-            </li>
-            <li >
-              <a href="pacientes.php"><span class="fa fa-user mr-3"></span> Pacientes</a>
-            </li>
-            <li>
-              <a href="odontograma.php"><span class="fa fa-smile-o mr-3"></span> Odontograma</a>
-            </li>
-            <li >
-              <a href="getinfo.php"><span class="fa fa-money mr-3"></span> Pagos</a>
-            </li>
-            <li class="active">
-              <a href="historial.php"><span class="fa fa-sticky-note mr-3"></span> Historial</a>
-			</li>
-			<li>
-				<a href="registro_user.php"><span class="fa fa-users mr-3"></span>administradores</a>
-			</li>
-			<?php
-          include "conexion/config.php";
-
-        
-          ?>
-          <form method='post' action="">
-            <input style="margin-top:25px" class="btn btn-danger" type="submit" value="Cerrar Sesion" name="but_logout">
-        </form>
-        </li>
-	        </ul>
-	      </div>
-    	</nav>
+<?php include('partials/flash.php'); ?>
+<?php include('menu.php'); ?>
 
         <!-- Page Content  -->
         <div id="content" class="p-4 p-md-5 pt-5 ">
           <div class="row border-bottom mb-3">
             <div class=" col-md-7 col-sm-12 animated fadeIn container centrar  ">
-                <span><h1 class="display-3">Historial</h1></span>
+                <h1 class="page-title">Historial</h1>
             </div>
             <div class="col-md-5 col-sm-12 container centrar pt-3 row">
               <div class="col-10">
-                <input class=" form-control border" type="text" name="search_text" id="search_text">
+                <input class="form-control border" type="text" name="search_text" id="search_text" placeholder="Buscar por cédula o nombre..." autocomplete="off">
+                <span id="search-spin" class="d-none ml-2 text-muted" aria-label="Cargando..."><i class="fa fa-spinner fa-spin"></i></span>
               </div>
               <div class="col-2">
                 <a href="#" class=" btn btn-primary align-middle " ><i class="fa fa-search"></i></a>
@@ -114,7 +76,7 @@ Auth::require();
 
                   </table>
                </form>
-
+            <?php } ?>
 
             </div>
           </div>
@@ -126,35 +88,10 @@ Auth::require();
 
 
           <script>
-        		$(document).ready(function(){
-
-        		load_data();
-
-        		function load_data(query)
-        		{
-        		$.ajax({
-        		url:"viewhistorial.php",
-        		method:"POST",
-        		data:{query:query},
-        		success:function(data)
-        		{
-        			$('#result').html(data);
-        		}
-        		});
-        		}
-        		$('#search_text').keyup(function(){
-        		var search = $(this).val();
-        		if(search != '')
-        		{
-        		load_data(search);
-        		}
-        		else
-        		{
-        		load_data();
-        		}
-        		});
-        		});
-        	</script>
+            $(function () {
+                ajaxSearch({ url: 'viewhistorial.php', inputId: 'search_text', resultId: 'result', spinId: 'search-spin' });
+            });
+          </script>
 
             <div class="container p-1 mt-3 text-center">
               <input class="btn btn-lg btn-primary align-middle" type="submit" name="" onclick="location.reload();" value="Actualizar">

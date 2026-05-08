@@ -19,19 +19,21 @@ Auth::require();
 
 	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
 	<?php
-	include("menu.php");
+	include('partials/skip_nav.php'); ?>
+<?php include("menu.php");
 	?>
 
 	<!-- Page Content  -->
 	<div id="content" class="p-4 p-md-5 pt-5 ">
 		<div class=" animated fadeIn container centrar">
-			<h2 class="display-3 border-bottom">Pacientes</h2>
+			<h1 class="page-title border-bottom pb-2">Pacientes</h1>
 		</div>
 		<div class="container-fluid">
 			<div class="row  mb-3">
@@ -41,6 +43,7 @@ Auth::require();
 					</div>
 					<div class="col-10">
 						<input class="form-control border" type="text" name="search" id="search_text" autocomplete="off" placeholder="Buscar">
+					<span id="search-spin" class="d-none ml-2 text-muted" aria-label="Cargando..."><i class="fa fa-spinner fa-spin"></i></span>
 					</div>
 
 					<div class="col-2 mt-3">
@@ -88,30 +91,8 @@ Auth::require();
 			<div class="mt-3" id="result"></div>
 		</div>
 		<script>
-			$(document).ready(function() {
-
-				load_data();
-
-				function load_data(query) {
-					$.ajax({
-						url: "fetch.php",
-						method: "POST",
-						data: {
-							query: query
-						},
-						success: function(data) {
-							$('#result').html(data);
-						}
-					});
-				}
-				$('#search_text').keyup(function() {
-					var search = $(this).val();
-					if (search != '') {
-						load_data(search);
-					} else {
-						load_data();
-					}
-				});
+			$(function () {
+				ajaxSearch({ url: 'fetch.php', inputId: 'search_text', resultId: 'result', spinId: 'search-spin' });
 			});
 		</script>
 		<script src="js/main.js"></script>
