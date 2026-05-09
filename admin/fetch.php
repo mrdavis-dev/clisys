@@ -24,19 +24,25 @@ if ($result->num_rows > 0) {
     $output .= '<div class="table-responsive">
    <table class="table table-bordered">
     <tr>
-     <th>id</th><th>Nombre</th><th>Apellidos</th><th>Cedula</th>
-     <th>Direccion</th><th>Teléfono</th><th>Email</th><th>Ocupación</th>
+     <th>Nombre</th><th>Apellidos</th><th>Cedula</th>
+     <th>Teléfono</th><th>Email</th><th>Acciones</th>
     </tr>';
     while ($row = $result->fetch_assoc()) {
+        $pid = (int)$row['id'];
         $output .= '<tr>
-    <td>' . h((string)$row['id']) . '</td>
     <td>' . h($row['nombre']) . '</td>
     <td>' . h($row['apellido']) . '</td>
     <td>' . h($row['cedula']) . '</td>
-    <td>' . h($row['direccion']) . '</td>
     <td>' . h($row['telefono']) . '</td>
     <td>' . h($row['email']) . '</td>
-    <td>' . h($row['ocupacion']) . '</td>
+    <td class="text-nowrap">
+      <a href="edit_paciente.php?id=' . $pid . '" class="btn btn-sm btn-success mr-1">
+        <i class="fa fa-pencil"></i> Editar
+      </a>
+      <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(' . $pid . ')">
+        <i class="fa fa-trash"></i> Borrar
+      </button>
+    </td>
    </tr>';
     }
     $output .= '</table></div>';

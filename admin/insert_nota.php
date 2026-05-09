@@ -3,11 +3,10 @@ require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Csrf.php';
 require_once __DIR__ . '/core/Module.php';
 require_once __DIR__ . '/core/Audit.php';
+require_once __DIR__ . '/conexion/config.php';
 Auth::require();
 Csrf::verify();
 Module::require('clinical_notes');
-
-require_once __DIR__ . '/conexion/config.php';
 
 $cedula    = trim($_POST['cedula']    ?? '');
 $fecha     = trim($_POST['fecha']     ?? '');
