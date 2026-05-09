@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/core/Auth.php';
 Auth::require();
+Auth::requireRole(['admin']);
 require_once __DIR__ . '/conexion/config.php';
 ?>
 <!DOCTYPE html>

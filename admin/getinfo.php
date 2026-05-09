@@ -2,6 +2,7 @@
 require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Csrf.php';
 Auth::require();
+Auth::requireRole(['admin', 'recepcion']);
 ?>
 <!DOCTYPE html>
 <html lang="en">

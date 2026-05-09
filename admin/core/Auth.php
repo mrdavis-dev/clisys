@@ -22,6 +22,37 @@ class Auth {
         }
         $_SESSION['last_activity'] = time();
     }
+
+    public static function requireSuperAdmin(): void
+    {
+        self::require();
+        if (($_SESSION['role'] ?? '') !== 'superadmin') {
+            http_response_code(403);
+            include __DIR__ . '/../partials/403.php';
+            exit;
+        }
+    }
+
+    public static function isSuperAdmin(): bool
+    {
+        return ($_SESSION['role'] ?? '') === 'superadmin';
+    }
+
+    public static function hasRole(array $roles): bool
+    {
+        $role = $_SESSION['role'] ?? '';
+        if ($role === 'superadmin') { return true; }
+        return in_array($role, $roles, true);
+    }
+
+    public static function requireRole(array $roles): void
+    {
+        if (!self::hasRole($roles)) {
+            http_response_code(403);
+            include __DIR__ . '/../partials/403.php';
+            exit;
+        }
+    }
 }
 
 function h(string $v): string {

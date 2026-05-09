@@ -2,6 +2,7 @@
 require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Csrf.php';
 Auth::require();
+Auth::requireRole(['admin', 'medico']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -32,8 +33,11 @@ Auth::require();
 
 	<!-- Page Content  -->
 	<div id="content" class="p-4 p-md-5 pt-5 ">
-		<div class=" animated fadeIn container centrar">
-			<h1 class="page-title border-bottom pb-2">Pacientes</h1>
+		<div class=" animated fadeIn container centrar d-flex justify-content-between align-items-center border-bottom pb-2">
+			<h1 class="page-title mb-0">Pacientes</h1>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Mymodal-1">
+				<i class="fa fa-user-plus mr-1"></i> Agregar paciente
+			</button>
 		</div>
 		<div class="container-fluid">
 			<div class="row  mb-3">
@@ -81,6 +85,94 @@ Auth::require();
 				ajaxSearch({ url: 'fetch.php', inputId: 'search_text', resultId: 'result', spinId: 'search-spin' });
 			});
 		</script>
+		<!-- MODAL AGREGAR PACIENTE -->
+		<div class="modal fade bg-dark" id="Mymodal-1" tabindex="-1" role="dialog" aria-labelledby="modalPacienteLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h5 class="modal-title" id="modalPacienteLabel">Agregar paciente</h5>
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+				<form method="POST" action="insert_paciente.php">
+				<?= Csrf::field() ?>
+				<input type="hidden" name="redirect_to" value="pacientes.php">
+				<div class="modal-body">
+				  <div class="container">
+					<label>Nombre</label>
+					<input type="text" class="mb-1 form-control border border-primary" name="nombre">
+					<label>Apellido</label>
+					<input type="text" class="mb-1 form-control border border-primary" name="apellido">
+					<label>Cedula</label>
+					<input type="text" class="mb-1 form-control border border-primary" name="cedula">
+					<label>Direccion</label>
+					<input type="text" class="mb-1 form-control border border-primary" name="direccion">
+					<label>Telefono</label>
+					<input type="text" class="mb-1 form-control border border-primary" name="telefono">
+					<label>Email</label>
+					<input type="text" class="mb-1 form-control border border-primary" name="email">
+					<label>Ocupacion</label>
+					<input type="text" class="mb-1 form-control border border-primary" name="ocupacion">
+					<label>Edad</label>
+					<input type="text" class="mb-1 form-control border border-primary" name="edad">
+				  </div>
+				  <div class="container">
+					<label>Motivo de la visita</label>
+					<textarea class="m-1 form-control border border-primary" name="motivo" cols="40" rows="5"></textarea>
+					<label>Habitos higienicos</label>
+					<textarea class="m-1 form-control border border-primary" name="habitos" cols="40" rows="3"></textarea>
+				  </div>
+				  <div class="container m-1 p-1">
+					<legend><h5>¿Está bajo tratamiento médico actualmente?</h5></legend>
+					<select class="form-control border" name="bajotratamiento"><option value="">...</option><option value="si">Si</option><option value="no">No</option></select>
+				  </div>
+				  <div class="container m-1 p-1">
+					<legend><h5>¿Ha sido hospitalizado quirúrgicamente?</h5></legend>
+					<select class="form-control border" name="quirurgicamente"><option value="">...</option><option value="si">Si</option><option value="no">No</option></select>
+				  </div>
+				  <div class="container m-1 p-1">
+					<legend><h5>¿Esta tomando algún medicamento o droga?</h5></legend>
+					<select class="form-control border" name="droga"><option value="">...</option><option value="si">Si</option><option value="no">No</option></select>
+				  </div>
+				  <div class="container m-1 p-1">
+					<legend><h5>¿Presenta algún tipo de alergia?</h5></legend>
+					<select class="form-control border" name="alergia"><option value="">...</option><option value="si">Si</option><option value="no">No</option></select>
+				  </div>
+				  <div class="container m-1 p-1">
+					<legend><h5>¿Ha tenido algún tipo de enfermedad cardiaca?</h5></legend>
+					<select class="form-control border" name="cardiaca"><option value="">...</option><option value="si">Si</option><option value="no">No</option></select>
+				  </div>
+				  <div class="container m-1 p-1">
+					<legend><h5>¿Es usted diabético o alguno de sus familiares la padece o padeció?</h5></legend>
+					<select class="form-control border" name="diabético"><option value="">...</option><option value="si">Si</option><option value="no">No</option></select>
+				  </div>
+				  <div class="container m-1 p-1">
+					<legend><h5>¿Ha tenido tubérculosis o hepatitis?</h5></legend>
+					<select class="form-control border" name="hepatitis"><option value="">...</option><option value="si">Si</option><option value="no">No</option></select>
+				  </div>
+				  <div class="container m-1 p-1">
+					<legend><h5>¿Ha presentado alteraciones en el sangrado?</h5></legend>
+					<select class="form-control border" name="sangrado"><option value="">...</option><option value="si">Si</option><option value="no">No</option></select>
+				  </div>
+				  <div class="container m-1 p-1">
+					<legend><h5>¿Ha tenido algúna enfermedad de transmisión sexual?</h5></legend>
+					<select class="form-control border" name="transmision"><option value="">...</option><option value="si">Si</option><option value="no">No</option></select>
+				  </div>
+				  <div class="container m-1 p-1">
+					<legend><h5>¿Tiene algún tipo de mal hábito?</h5></legend>
+					<select class="form-control border" name="habito"><option value="">...</option><option value="si">Si</option><option value="no">No</option></select>
+				  </div>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+				  <button type="reset" class="btn" style="background-color:var(--color-3)">Borrar</button>
+				  <input type="submit" class="btn btn-primary" name="submit" value="Guardar">
+				</div>
+				</form>
+			  </div>
+			</div>
+		</div>
 		<script src="js/main.js"></script>
 </body>
 

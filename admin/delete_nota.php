@@ -4,6 +4,7 @@ require_once __DIR__ . '/core/Csrf.php';
 require_once __DIR__ . '/core/Module.php';
 require_once __DIR__ . '/core/Audit.php';
 Auth::require();
+Auth::requireRole(['admin', 'medico']);
 Csrf::verify();
 Module::require('clinical_notes');
 

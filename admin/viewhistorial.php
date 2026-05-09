@@ -26,7 +26,7 @@ if ($result->num_rows > 0) {
     <tr>
     <td>Id</td><th>Fecha</th><th>Nombre</th><th>Cedula</th>
     <th>Cantidad pagada</th><th>Tipo de pago</th><th>Saldo</th>
-    <th>Tratamiento</th><th>Nota</th>
+    <th>Tratamiento</th><th>Nota</th><th>Acciones</th>
     </tr>';
     while ($row = $result->fetch_assoc()) {
         $output .= '<tr>
@@ -39,6 +39,15 @@ if ($result->num_rows > 0) {
     <td>B/. ' . h((string)$row['saldo']) . '</td>
     <td>' . h($row['tratamiento']) . '</td>
     <td>' . h($row['nota']) . '</td>
+    <td><button type="button" class="btn btn-sm btn-warning"
+      data-toggle="modal" data-target="#modalEditPago"
+      data-id="'          . h((string)$row['id'])       . '"
+      data-fecha="'        . h($row['fecha'])            . '"
+      data-monto="'        . h((string)$row['monto'])    . '"
+      data-tipo="'         . h($row['tipo_de_pago'])     . '"
+      data-tratamiento="'  . h($row['tratamiento'])      . '"
+      data-nota="'         . h($row['nota'])             . '"
+    ><i class="fa fa-pencil"></i> Editar</button></td>
    </tr>';
     }
     $output .= '</table></div>';

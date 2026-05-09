@@ -1,8 +1,10 @@
 <?php
+require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Csrf.php';
 require_once __DIR__ . '/core/Audit.php';
 require_once __DIR__ . '/core/Plan.php';
-session_start();
+Auth::require();
+Auth::requireRole(['admin', 'medico']);
 Csrf::verify();
 require_once __DIR__ . '/conexion/config.php';
 
@@ -58,6 +60,13 @@ if (isset($_POST['submit'])) {
     $new_id = (string)$db->insert_id;
     $stmt->close();
     Audit::log('insert_patient', 'pacientes', $new_id);
-    header('Location: inicio.php?ok=paciente');
+    $redirect  = trim($_POST['redirect_to'] ?? '');
+    $allowed   = ['inicio.php', 'pacientes.php'];
+    $safe      = false;
+    foreach ($allowed as $a) {
+        if (strncmp($redirect, $a, strlen($a)) === 0) { $safe = true; break; }
+    }
+    $location = $safe ? $redirect . '?ok=paciente' : 'inicio.php?ok=paciente';
+    header('Location: ' . $location);
     exit;
 }

@@ -2,6 +2,7 @@
 require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Csrf.php';
 Auth::require();
+Auth::requireRole(['admin']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -47,6 +48,13 @@ Auth::require();
           <label for="" class="mt-2">Contraseña</label>
           <input type="password" class="form-control border" name="pass">
 
+          <label for="id_role" class="mt-2">Rol</label>
+          <select name="role" id="id_role" class="form-control border">
+            <option value="admin">Admin</option>
+            <option value="recepcion">Recepción</option>
+            <option value="medico">Médico</option>
+          </select>
+
           <input class="btn btn-primary mt-3" type="submit" name="submit" value="Guardar">
         </form>
 
@@ -56,7 +64,7 @@ Auth::require();
             <?php
             // include("conexion/config.php");
             $clinic_id = Tenant::id();
-            $stmt_users = $db->prepare('SELECT id, username, name FROM users WHERE clinic_id = ?');
+            $stmt_users = $db->prepare("SELECT id, username, name, role FROM users WHERE clinic_id = ? AND role != 'superadmin'");
             $stmt_users->bind_param('i', $clinic_id);
             $stmt_users->execute();
             $result = $stmt_users->get_result();
@@ -74,8 +82,7 @@ Auth::require();
                         <td scope="col">#</td>
                         <td scope="col"><strong>usuario</strong></td>
                         <td scope="col"><strong>nombre</strong></td>
-                        <!-- <td scope="col"><strong>Nombre</strong></td>
-                        <td scope="col"><strong>Asunto</strong></td> -->
+                        <td scope="col"><strong>rol</strong></td>
                       </tr>
                       <?php
 
@@ -86,7 +93,7 @@ Auth::require();
                           <td align="center"><input name="checkbox[]" type="checkbox" value="<?= h((string)$row['id']) ?>"></td>
                           <td><?= h($row['username']) ?></td>
                           <td><?= h($row['name']) ?></td>
-
+                          <td><?= h($row['role']) ?></td>
                         </tr>
 
                       <?php
@@ -103,7 +110,7 @@ Auth::require();
                 if (isset($_POST['delete']) && !empty($_POST['checkbox'])) {
                   Csrf::verify();
                   $clinic_id_del = Tenant::id();
-                  $stmt = $db->prepare('DELETE FROM users WHERE id = ? AND clinic_id = ?');
+                  $stmt = $db->prepare("DELETE FROM users WHERE id = ? AND clinic_id = ? AND role != 'superadmin'");
                   foreach ($_POST['checkbox'] as $del_id) {
                     $id_int = (int)$del_id;
                     $stmt->bind_param('ii', $id_int, $clinic_id_del);

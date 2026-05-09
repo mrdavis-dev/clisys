@@ -39,9 +39,11 @@ include("menu.php");
 
 							</div>
 							<div class="centrar">
+								<?php if (Auth::hasRole(['admin', 'medico'])): ?>
 								<button type="button" class="sombra m-3 btn btn-primary btn-lg" data-toggle="modal" data-target="#Mymodal-1">
 									Agregar paciente
 								</button>
+								<?php endif; ?>
 								<button type="button" class="sombra m-3 btn btn-primary btn-lg" data-toggle="modal" data-target="#Mymodal-2">
 									Agregar cita
 								</button>

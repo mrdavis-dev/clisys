@@ -9,7 +9,7 @@ if (!isset($_POST['username'], $_POST['password'])) {
 }
 
 //  SI SE CONECTO Y SI SE ENVIARON AMBOS DATOS SE PROCEDE CON LA CONSULTA DE EXISTENCIA DEL USUARIO EVITANDO INYECCIONES SQL ?
-if ($stmt = $db->prepare('SELECT id, password, clinic_id FROM users WHERE username = ?'))
+if ($stmt = $db->prepare('SELECT id, password, clinic_id, role FROM users WHERE username = ?'))
  {
 	$stmt->bind_param('s', $_POST['username']);
 	$stmt->execute();
@@ -18,7 +18,7 @@ if ($stmt = $db->prepare('SELECT id, password, clinic_id FROM users WHERE userna
      // SI EL USUARIO EXISTE EN LA TABLA SE EXTRAE Y SE APUNTA SU DNI Y SU CLAVE
      if ($stmt->num_rows > 0)
       {
-		$stmt->bind_result($dni, $clave, $clinic_id);
+		$stmt->bind_result($dni, $clave, $clinic_id, $role);
 		$stmt->fetch();
 
 			// AHORA VERIFICA SI LA CLAVE QUE SE EXTRAJO DE LA TABLA ES IGUAL A LA QUE SE ENVIA DESDE EL FORMULARIO
@@ -31,8 +31,10 @@ if ($stmt = $db->prepare('SELECT id, password, clinic_id FROM users WHERE userna
 					$_SESSION['username']   = $_POST['username'];
 					$_SESSION['id']         = $dni;
 					$_SESSION['clinic_id']  = (int)$clinic_id;
+					$_SESSION['role']       = $role ?? 'admin';
 					Audit::log('login', 'users', (string)$dni);
-                    header('Location: ../inicio.php');
+					$dest = ($role === 'superadmin') ? '../superadmin/index.php' : '../inicio.php';
+                    header('Location: ' . $dest);
                    
 				} 
            

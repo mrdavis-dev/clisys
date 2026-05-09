@@ -14,9 +14,11 @@
 				<li class="<?= $__current === 'inicio.php' ? 'active' : '' ?>">
 					<a href="inicio.php"><span class="fa fa-home mr-3" aria-hidden="true"></span> Inicio</a>
 				</li>
+				<?php if (Auth::hasRole(['admin', 'medico'])): ?>
 				<li class="<?= in_array($__current, ['pacientes.php', 'edit_paciente.php']) ? 'active' : '' ?>">
 					<a href="pacientes.php"><span class="fa fa-user mr-3" aria-hidden="true"></span> Pacientes</a>
 				</li>
+				<?php endif; ?>
 				<?php
 				// Load module system if not already loaded
 				if (!class_exists('Module')) {
@@ -33,36 +35,43 @@
 					require_once __DIR__ . '/conexion/config.php';
 				}
 
-				if (Module::enabled('odontogram')): ?>
+				if (Auth::hasRole(['admin', 'medico']) && Module::enabled('odontogram')): ?>
 				<li class="<?= $__current === 'odontograma.php' ? 'active' : '' ?>">
 					<a href="odontograma.php"><span class="fa fa-smile-o mr-3" aria-hidden="true"></span> Odontograma</a>
 				</li>
 				<?php endif; ?>
 
-				<?php if (Module::enabled('clinical_notes')): ?>
+				<?php if (Auth::hasRole(['admin', 'medico']) && Module::enabled('clinical_notes')): ?>
 				<li class="<?= $__current === 'notas.php' ? 'active' : '' ?>">
 					<a href="notas.php"><span class="fa fa-file-text-o mr-3" aria-hidden="true"></span> Notas Clínicas</a>
 				</li>
 				<?php endif; ?>
 
-				<?php if (Module::enabled('payments')): ?>
+				<?php if (Auth::hasRole(['admin', 'recepcion']) && Module::enabled('payments')): ?>
 				<li class="<?= in_array($__current, ['getinfo.php', 'pagos.php']) ? 'active' : '' ?>">
 					<a href="getinfo.php"><span class="fa fa-money mr-3" aria-hidden="true"></span> Pagos</a>
 				</li>
 				<?php endif; ?>
 
-				<?php if (Module::enabled('history')): ?>
+				<?php if (Auth::hasRole(['admin', 'recepcion']) && Module::enabled('history')): ?>
 				<li class="<?= $__current === 'historial.php' ? 'active' : '' ?>">
 					<a href="historial.php"><span class="fa fa-sticky-note mr-3" aria-hidden="true"></span> Historial</a>
 				</li>
 				<?php endif; ?>
 
+				<?php if (Auth::hasRole(['admin'])): ?>
 				<li class="<?= $__current === 'registro_user.php' ? 'active' : '' ?>">
 					<a href="registro_user.php"><span class="fa fa-users mr-3" aria-hidden="true"></span> Administradores</a>
 				</li>
 				<li class="<?= $__current === 'audit.php' ? 'active' : '' ?>">
 					<a href="audit.php"><span class="fa fa-shield mr-3" aria-hidden="true"></span> Auditoría</a>
 				</li>
+				<?php endif; ?>
+				<?php if (Auth::isSuperAdmin()): ?>
+				<li>
+					<a href="superadmin/index.php"><span class="fa fa-cog mr-3" aria-hidden="true"></span> Super Admin</a>
+				</li>
+				<?php endif; ?>
 				<li>
 				<?php
 				if (!class_exists('Csrf')) { require_once __DIR__ . '/core/Csrf.php'; }

@@ -31,5 +31,12 @@ $stmt->close();
 
 Audit::log('insert_note', 'clinic_notes', $new_id);
 
-header('Location: notas.php?ok=nota');
+$redirect   = trim($_POST['redirect_to'] ?? '');
+$allowed    = ['notas.php', 'edit_paciente.php'];
+$safe       = false;
+foreach ($allowed as $a) {
+    if (strncmp($redirect, $a, strlen($a)) === 0) { $safe = true; break; }
+}
+$location = $safe ? $redirect . '&ok=nota' : 'notas.php?ok=nota';
+header('Location: ' . $location);
 exit;

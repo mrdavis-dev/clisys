@@ -2,6 +2,7 @@
 require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Csrf.php';
 Auth::require();
+Auth::requireRole(['admin', 'recepcion']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,45 +41,7 @@ Auth::require();
                 <a href="#" class=" btn btn-primary align-middle " ><i class="fa fa-search"></i></a>
               </div>
             </div>
-            <div class="">
-
-                     <?php
-             if (isset($_POST['delete'])) {
-                Csrf::verify();
-                $clinic_id = Tenant::id();
-                $stmt = $db->prepare('DELETE FROM pago WHERE id = ? AND clinic_id = ?');
-                $stmt->bind_param('ii', $_POST['emp_id'], $clinic_id);
-                $stmt->execute();
-                $stmt->close();
-             } else {
-            ?>
-               <form method="post" action="historial.php">
-               <?= Csrf::field() ?>
-                  <table width = "400" border = "0" cellspacing = "1"
-                     cellpadding = "2">
-
-                     <tr>
-                        <td width = "100">Paciente ID</td>
-                        <td><input class="form-control border" name = "emp_id" type = "text" id = "emp_id"></td>
-                     </tr>
-
-                     <tr>
-                        <td width = "100"> </td>
-                        <td> </td>
-                     </tr>
-
-                     <tr>
-                        <td width = "100"> </td>
-                        <td>
-                           <input class="btn btn-primary" name = "delete" type = "submit" id = "delete" value = "Delete">
-                        </td>
-                     </tr>
-
-                  </table>
-               </form>
-            <?php } ?>
-
-            </div>
+            <div class=""></div>
           </div>
           <div class="container-fluid">
 
@@ -99,6 +62,68 @@ Auth::require();
             </form>
         </div>
     </div>
+<div class="modal fade" id="modalEditPago" tabindex="-1" role="dialog" aria-labelledby="modalEditPagoLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEditPagoLabel">Editar pago</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="functions/edit_pago.php">
+        <?= Csrf::field() ?>
+        <input type="hidden" name="pago_id" id="edit-pago-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Fecha</label>
+            <input type="date" class="form-control border" name="fecha" id="edit-pago-fecha" required>
+          </div>
+          <div class="form-group">
+            <label>Monto (B/.)</label>
+            <input type="number" step="0.01" min="0" class="form-control border" name="monto" id="edit-pago-monto" required>
+          </div>
+          <div class="form-group">
+            <label>Tipo de pago</label>
+            <select class="form-control border" name="tipo_de_pago" id="edit-pago-tipo">
+              <option value="Efectivo">Efectivo</option>
+              <option value="Tarjeta">Tarjeta</option>
+              <option value="Cheque">Cheque</option>
+              <option value="Transferencia">Transferencia</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tratamiento</label>
+            <input type="text" class="form-control" id="edit-pago-tratamiento-display" readonly>
+          </div>
+          <div class="form-group">
+            <label>Nota</label>
+            <textarea class="form-control border" name="nota" id="edit-pago-nota" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+$('#modalEditPago').on('show.bs.modal', function (event) {
+    var btn = $(event.relatedTarget);
+    $('#edit-pago-id').val(btn.data('id'));
+    $('#edit-pago-fecha').val(btn.data('fecha'));
+    $('#edit-pago-monto').val(btn.data('monto'));
+    var tipo = btn.data('tipo');
+    $('#edit-pago-tipo').find('option').each(function () {
+        $(this).prop('selected', $(this).val() === tipo);
+    });
+    $('#edit-pago-tratamiento-display').val(btn.data('tratamiento'));
+    $('#edit-pago-nota').val(btn.data('nota'));
+});
+</script>
 <script src="js/main.js"></script>
 </body>
 </html>

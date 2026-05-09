@@ -2,6 +2,7 @@
 require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Csrf.php';
 Auth::require();
+Auth::requireRole(['admin', 'medico']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -201,6 +202,14 @@ Auth::require();
 
                 <!-- Tab: Notas clínicas -->
                 <div class="tab-pane fade" id="tab-notas" role="tabpanel">
+                    <?php if (Auth::hasRole(['admin', 'medico'])): ?>
+                    <div class="text-right mb-3 mt-3">
+                        <button type="button" class="btn btn-primary btn-sm"
+                            data-toggle="modal" data-target="#modalNuevaNota">
+                            <i class="fa fa-plus mr-1"></i> Nueva nota
+                        </button>
+                    </div>
+                    <?php endif; ?>
                     <?php if (empty($notas)): ?>
                         <p class="text-muted text-center mt-4">
                             <i class="fa fa-file-o fa-2x d-block mb-2"></i>
@@ -236,6 +245,44 @@ Auth::require();
         <?php endif; ?>
     </div><!-- #content -->
 
+<?php if (Auth::hasRole(['admin', 'medico']) && $paciente): ?>
+<div class="modal fade" id="modalNuevaNota" tabindex="-1" role="dialog" aria-labelledby="modalNuevaNotaLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalNuevaNotaLabel">Nueva nota clínica</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="insert_nota.php">
+        <?= Csrf::field() ?>
+        <input type="hidden" name="redirect_to" value="edit_paciente.php?id=<?= h((string)$paciente['id']) ?>">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Cédula</label>
+            <input type="text" class="form-control border" name="cedula"
+                value="<?= h($paciente['cedula']) ?>" readonly>
+          </div>
+          <div class="form-group">
+            <label>Fecha</label>
+            <input type="date" class="form-control border" name="fecha"
+                value="<?= date('Y-m-d') ?>" required>
+          </div>
+          <div class="form-group">
+            <label>Nota</label>
+            <textarea class="form-control border" name="contenido" rows="5" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<?php endif; ?>
     <script src="js/main.js"></script>
 </body>
 </html>

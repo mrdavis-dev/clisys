@@ -1,8 +1,10 @@
 <?php
+require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Csrf.php';
 require_once __DIR__ . '/core/Audit.php';
 require_once __DIR__ . '/core/Plan.php';
-session_start();
+Auth::require();
+Auth::requireRole(['admin']);
 Csrf::verify();
 require_once __DIR__ . '/conexion/config.php';
 
@@ -21,11 +23,15 @@ if (!Plan::withinLimit('users')) {
     exit;
 }
 
+$role_input     = $_POST['role'] ?? 'admin';
+$allowed_roles  = ['admin', 'recepcion', 'medico'];
+$role           = in_array($role_input, $allowed_roles, true) ? $role_input : 'admin';
+
 $clinic_id    = Tenant::id();
 $hashPassword = password_hash($pass, PASSWORD_BCRYPT, ['cost' => 12]);
 
-$stmt = $db->prepare('INSERT INTO users (clinic_id, username, name, password) VALUES (?, ?, ?, ?)');
-$stmt->bind_param('isss', $clinic_id, $user, $name, $hashPassword);
+$stmt = $db->prepare('INSERT INTO users (clinic_id, username, name, password, role) VALUES (?, ?, ?, ?, ?)');
+$stmt->bind_param('issss', $clinic_id, $user, $name, $hashPassword, $role);
 $stmt->execute();
 $new_id = (string)$db->insert_id;
 $stmt->close();

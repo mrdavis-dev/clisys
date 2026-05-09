@@ -3,6 +3,7 @@ require_once __DIR__ . '/core/Auth.php';
 require_once __DIR__ . '/core/Csrf.php';
 require_once __DIR__ . '/core/Module.php';
 Auth::require();
+Auth::requireRole(['admin', 'medico']);
 require_once __DIR__ . '/conexion/config.php';
 Module::require('clinical_notes');
 ?>
