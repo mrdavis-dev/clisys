@@ -61,14 +61,6 @@ if (isset($_POST['enviar'])) {
         $mail->Port       = (int)$_ENV['SMTP_PORT'];
 
 
-//         // $mail->SMTPDebug = 2;                                 // Enable verbose debug output
-//         // $mail->isSMTP();                                      // Set mailer to use SMTP
-//         // $mail->Host = 'smtp.mailtrap.io';  // Specify main and backup SMTP servers
-//         // $mail->SMTPAuth = true;                               // Enable SMTP authentication
-//         // $mail->Username = '1e036fa7d28421';                 // SMTP username
-//         // $mail->Password = 'f9476716cd40b3';                           // SMTP password
-//         // $mail->SMTPSecure = 'slt';                            // Enable TLS encryption, `ssl` also accepted
-//         // $mail->Port = 2525;                                    // TCP port to connect to
 
 
 //         //Recipients
@@ -345,11 +337,10 @@ if (isset($_POST['print'])) {
           <section class="additional-info">
           <div class="row">
             <div class="columns">
-              <h5 style="color:#5cb6ac">Informacion</h5>
-              <p>Somos una clínica dental con un concepto único, innovando para mantener su salud oral.<br>
-                6292-5666<br>
-                clinicadentalanguizola@hotmail.com<br>
-                </p>
+              <h5>Información</h5>
+              <p><?= htmlspecialchars($pdf_clinic_name, ENT_QUOTES) ?><br>
+                <?= htmlspecialchars($_ENV['SMTP_FROM'] ?? '', ENT_QUOTES) ?>
+              </p>
             </div>
 
           </div>

@@ -19,10 +19,6 @@
 
 <body class="fondo" style="font-family: 'Montserrat', sans-serif;">
   <div class="container" style=" scroll-behavior: smooth;">
-    <!-- logo -->
-    <div class="text-center text-light">
-      <img src="../img/PPS_LOGO_WHITE_.png" class="img-fluid" style="width: 40%;" alt="Responsive image">
-    </div>
 
     <!-- register form -->
     <div class="text-center mt-3 text-white w-75 mx-auto">
