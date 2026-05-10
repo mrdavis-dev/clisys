@@ -22,6 +22,12 @@ class Tenant
      */
     public static function load(mysqli $db): void
     {
+        // Superadmin has no clinic — skip resolution entirely
+        if (($_SESSION['role'] ?? '') === 'superadmin') {
+            self::$clinicId = 0;
+            return;
+        }
+
         // 1. Already in session (set by login)
         if (isset($_SESSION['clinic_id'])) {
             self::$clinicId = (int)$_SESSION['clinic_id'];

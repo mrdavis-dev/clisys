@@ -5,7 +5,7 @@
 #sidebar {
   min-width: 270px;
   max-width: 270px;
-  background: var(--color-primary);
+  background: var(--sidebar-bg);
   color: #fff;
   -webkit-transition: all 0.3s;
   -o-transition: all 0.3s;
@@ -40,7 +40,7 @@
     #sidebar ul li.active > a {
       background-color: var(--sidebar-active-bg);
       color: #fff;
-      border-left: 3px solid #fff;
+      border-left: 3px solid var(--color-primary);
       padding-left: 7px; }
   @media (max-width: 991.98px) {
     #sidebar {
@@ -69,12 +69,12 @@
       height: 40px;
       border-radius: 50%; }
       #sidebar .custom-menu .btn.btn-primary {
-        background: var(--color-primary);
-        border-color: var(--color-primary); }
+        background: rgba(255,255,255,0.15);
+        border-color: rgba(255,255,255,0.3); }
         #sidebar .custom-menu .btn.btn-primary:hover,
         #sidebar .custom-menu .btn.btn-primary:focus {
-          background: var(--color-primary-dk) !important;
-          border-color: var(--color-primary-dk) !important; }
+          background: rgba(255,255,255,0.25) !important;
+          border-color: rgba(255,255,255,0.5) !important; }
 
 a[data-toggle="collapse"] {
   position: relative; }
@@ -101,13 +101,14 @@ a[data-toggle="collapse"] {
   transition: all 0.3s; }
 
 .btn.btn-primary {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  background: var(--color-primary-dk);
+  border-color: var(--color-primary-dk);
+  color: #fff;
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out; }
   .btn.btn-primary:hover,
   .btn.btn-primary:focus {
-    background: var(--color-primary-dk) !important;
-    border-color: var(--color-primary-dk) !important; }
+    background: #1d4ed8 !important;
+    border-color: #1d4ed8 !important; }
 
 .footer p {
   color: rgba(255, 255, 255, 0.5); }
@@ -125,7 +126,7 @@ a[data-toggle="collapse"] {
   .form-control:focus,
   .form-control:active {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 0.2rem rgba(92, 182, 172, 0.25) !important;
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.20) !important;
     outline: none; }
 
 .subscribe-form .form-control {

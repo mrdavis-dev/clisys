@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS consulta (
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
     id        INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    clinic_id INT UNSIGNED NOT NULL DEFAULT 1,
+    clinic_id INT UNSIGNED NULL DEFAULT NULL,
     username  VARCHAR(60)  NOT NULL,
     password  VARCHAR(255) NOT NULL,
     name      VARCHAR(120) NOT NULL,

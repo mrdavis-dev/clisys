@@ -31,6 +31,17 @@ if (isset($_POST['enviar'])) {
     $stmt->close();
     Audit::log('insert_pago', 'pago', $pago_id);
 
+    // Fetch the clinic name for use in emails / PDFs
+    $clinic_name = 'ClíSys';
+    $cstmt = $db->prepare('SELECT name FROM clinics WHERE id = ?');
+    $cstmt->bind_param('i', $clinic_id);
+    $cstmt->execute();
+    $crow = $cstmt->get_result()->fetch_assoc();
+    $cstmt->close();
+    if (!empty($crow['name'])) {
+        $clinic_name = $crow['name'];
+    }
+
     // send email
     // Import PHPMailer classes into the global namespace
     // These must be at the top of your script, not inside a function
@@ -66,12 +77,12 @@ if (isset($_POST['enviar'])) {
 
 //         //Content
 $mail->isHTML(true);                                  // Set email format to HTML
-        $mail->Subject = 'Factura Clinica Anguizola';
+        $mail->Subject = 'Factura ' . $clinic_name;
         $mail->Body    = '<div class="invoice-card">
           <img src="https://c/logo-color.png" style="width:50px;">
           <div class="invoice-title">
             <div id="main-title">
-              <h4>Clinica Anguizola</h4>
+              <h4><?= h($clinic_name) ?></h4>
             </div>
             <span id="date">'.$fecha.'</span>
           </div>
@@ -273,6 +284,19 @@ if (isset($_POST['print'])) {
   $saldo = $_POST['saldo'];
 
 
+  // Fetch clinic name for PDF header
+  $pdf_clinic_name = 'ClíSys';
+  $pdf_clinic_id = isset($_SESSION['clinic_id']) ? (int)$_SESSION['clinic_id'] : 1;
+  require_once __DIR__ . '/conexion/config.php';
+  $pcstmt = $db->prepare('SELECT name FROM clinics WHERE id = ?');
+  $pcstmt->bind_param('i', $pdf_clinic_id);
+  $pcstmt->execute();
+  $pcrow = $pcstmt->get_result()->fetch_assoc();
+  $pcstmt->close();
+  if (!empty($pcrow['name'])) {
+      $pdf_clinic_name = $pcrow['name'];
+  }
+
   $dompdf = new Dompdf();
   // ob_start();
   // include "pdftemplate.php";
@@ -291,8 +315,8 @@ if (isset($_POST['print'])) {
             <tr class="intro">
 
               <td style="color:black">
-                <h2 style="color:#5cb6ac">Factura Clinica Anguizola</h2>
-                clinica Anguizola<br>
+                <h2 style="color:#5cb6ac">Factura ' . htmlspecialchars($pdf_clinic_name, ENT_QUOTES) . '</h2>
+                ' . htmlspecialchars($pdf_clinic_name, ENT_QUOTES) . '<br>
                 '.$fecha.' <br>
                 Paciente: '.$nombre.'  <br>
               </td>

@@ -30,7 +30,9 @@ if ($stmt = $db->prepare('SELECT id, password, clinic_id, role FROM users WHERE 
 					$_SESSION['loggedin']   = TRUE;
 					$_SESSION['username']   = $_POST['username'];
 					$_SESSION['id']         = $dni;
-					$_SESSION['clinic_id']  = (int)$clinic_id;
+					if ($role !== 'superadmin') {
+						$_SESSION['clinic_id'] = (int)$clinic_id;
+					}
 					$_SESSION['role']       = $role ?? 'admin';
 					Audit::log('login', 'users', (string)$dni);
 					$dest = ($role === 'superadmin') ? '../superadmin/index.php' : '../inicio.php';

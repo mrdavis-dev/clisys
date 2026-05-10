@@ -24,15 +24,7 @@ $recent = $db->query(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Admin — Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/layout.css">
-    <link rel="stylesheet" href="../css/main.css">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <?php include __DIR__ . '/_head.php'; ?>
 </head>
 <body>
 <?php include __DIR__ . '/_header.php'; ?>
@@ -41,7 +33,7 @@ $recent = $db->query(
 
         <div class="row mb-4">
             <div class="col-sm-6 col-lg-3 mb-3">
-                <div class="card text-white bg-primary h-100">
+                <div class="card sa-card sa-card-blue-dk h-100">
                     <div class="card-body d-flex align-items-center">
                         <span class="fa fa-hospital-o fa-2x mr-3" aria-hidden="true"></span>
                         <div>
@@ -52,7 +44,7 @@ $recent = $db->query(
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3 mb-3">
-                <div class="card text-white bg-success h-100">
+                <div class="card sa-card sa-card-blue h-100">
                     <div class="card-body d-flex align-items-center">
                         <span class="fa fa-check-circle fa-2x mr-3" aria-hidden="true"></span>
                         <div>
@@ -63,7 +55,7 @@ $recent = $db->query(
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3 mb-3">
-                <div class="card text-white bg-info h-100">
+                <div class="card sa-card sa-card-blue-lt h-100">
                     <div class="card-body d-flex align-items-center">
                         <span class="fa fa-users fa-2x mr-3" aria-hidden="true"></span>
                         <div>
@@ -74,7 +66,7 @@ $recent = $db->query(
                 </div>
             </div>
             <div class="col-sm-6 col-lg-3 mb-3">
-                <div class="card text-white bg-warning h-100">
+                <div class="card sa-card sa-card-slate h-100">
                     <div class="card-body d-flex align-items-center">
                         <span class="fa fa-user fa-2x mr-3" aria-hidden="true"></span>
                         <div>

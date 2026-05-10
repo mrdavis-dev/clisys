@@ -9,7 +9,7 @@
         	</div>
 			<div class="p-4">
 				<img src="" alt="">
-		  		<h1 style="font-size: calc(20px + 1.1vw);" class="border-bottom"><a href="index.php" class="logo">Clínica Anguizola</a></h1>
+		  		<h1 style="font-size: calc(20px + 1.1vw);" class="border-bottom"><a href="index.php" class="logo">ClíSys</a></h1>
 	       	<ul class="list-unstyled components mb-5">
 				<li class="<?= $__current === 'inicio.php' ? 'active' : '' ?>">
 					<a href="inicio.php"><span class="fa fa-home mr-3" aria-hidden="true"></span> Inicio</a>

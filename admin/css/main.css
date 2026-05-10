@@ -1,19 +1,20 @@
 :root {
-    /* Brand */
-    --color-primary:     #5CB6AC;
-    --color-primary-dk:  #4a9d94;
+    /* Brand — ClíSys SaaS — Azul profesional */
+    --color-primary:     #2563EB;   /* blue — buttons, links, accents */
+    --color-primary-dk:  #1E3A8A;   /* dark navy — sidebar, hover states */
+    --color-primary-lt:  #60A5FA;   /* light blue — highlights, active border */
     --color-secondary:   #8B8B8B;
     --color-muted:       #d4d4d4;
 
     /* Sidebar */
-    --sidebar-bg:         var(--color-primary);
-    --sidebar-link:       rgba(255, 255, 255, 0.85);
-    --sidebar-active-bg:  rgba(255, 255, 255, 0.15);
+    --sidebar-bg:         linear-gradient(180deg, #1E3A8A 0%, #2563EB 100%);
+    --sidebar-link:       rgba(255, 255, 255, 0.82);
+    --sidebar-active-bg:  rgba(96, 165, 250, 0.18);
 
     /* Semantic */
-    --color-success: #28a745;
-    --color-danger:  #dc3545;
-    --color-warning: #ffc107;
+    --color-success: #16a34a;
+    --color-danger:  #dc2626;
+    --color-warning: #d97706;
 
     /* Typography */
     --font-body: 'Poppins', sans-serif;
@@ -22,8 +23,8 @@
     --page-header-size: 1.5rem;
     --table-max-height:  22rem;
 
-    /* Legacy aliases (kept for backward compat) */
-    --color-1: #5CB6AC;
+    /* Legacy aliases */
+    --color-1: #2563EB;
     --color-2: #8B8B8B;
     --color-3: #d4d4d4;
 }
@@ -46,7 +47,7 @@
     font-size: var(--page-header-size);
     font-weight: 600;
     margin-bottom: 0;
-    color: #333;
+    color: #1e293b;
 }
 
 /* ── Responsive table scroll ────────────────────────────── */
@@ -121,9 +122,55 @@
 }
 .skip-to-main:focus { top: 0; outline: 3px solid #fff; }
 
-/* ── Focus ring (brand colour) ──────────────────────────── */
+/* ── Focus ring ─────────────────────────────────────────── */
 *:focus-visible {
-    outline: 3px solid var(--color-primary);
+    outline: 3px solid var(--color-primary-lt);
     outline-offset: 2px;
 }
 *:focus:not(:focus-visible) { outline: none; }
+
+/* ── Bootstrap color overrides ──────────────────────────── */
+
+.btn-primary {
+    background-color: var(--color-primary) !important;
+    border-color:     var(--color-primary) !important;
+    color: #fff !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #1d4ed8 !important;
+    border-color:     #1d4ed8 !important;
+    color: #fff !important;
+}
+.btn-outline-primary {
+    color:        var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+.btn-outline-primary:hover {
+    background-color: var(--color-primary) !important;
+    border-color:     var(--color-primary) !important;
+    color: #fff !important;
+}
+
+.bg-primary {
+    background-color: var(--color-primary) !important;
+}
+
+.badge-primary {
+    background-color: var(--color-primary) !important;
+}
+
+a {
+    color: var(--color-primary);
+}
+a:hover {
+    color: #1d4ed8;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(37, 99, 235, 0.06);
+}
+
+body {
+    background-color: #F8FAFC;
+}

@@ -1,5 +1,6 @@
 <?php
 if (!class_exists('Csrf')) { require_once __DIR__ . '/../core/Csrf.php'; }
+if (!function_exists('h')) { require_once __DIR__ . '/../core/Auth.php'; }
 
 if (isset($_POST['but_logout'])) {
     Csrf::verify();
@@ -36,10 +37,8 @@ $__sa_current = basename($_SERVER['PHP_SELF']);
                 <li class="<?= $__sa_current === 'plans.php'   ? 'active' : '' ?>">
                     <a href="plans.php"><span class="fa fa-list mr-3" aria-hidden="true"></span> Planes</a>
                 </li>
-                <li class="mt-3">
-                    <a href="../inicio.php" class="text-muted">
-                        <span class="fa fa-arrow-left mr-3" aria-hidden="true"></span> Volver al admin
-                    </a>
+                <li class="<?= $__sa_current === 'clinic_users.php' ? 'active' : '' ?>">
+                    <a href="clinic_users.php"><span class="fa fa-users mr-3" aria-hidden="true"></span> Usuarios</a>
                 </li>
                 <li>
                     <form method="post" action="">

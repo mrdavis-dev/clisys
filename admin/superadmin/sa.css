@@ -1,0 +1,160 @@
+/* ── ClíSys Super Admin — Azul profesional ────────────────── */
+:root {
+    --sa-blue:       #2563EB;
+    --sa-blue-light: #60A5FA;
+    --sa-blue-dark:  #1E3A8A;
+    --sa-bg:         #F8FAFC;
+    --sa-sidebar-w:  260px;
+
+    --color-primary:    var(--sa-blue);
+    --color-primary-dk: var(--sa-blue-dark);
+    --sidebar-link:     rgba(255,255,255,0.82);
+    --sidebar-active-bg: rgba(96,165,250,0.18);
+}
+
+/* ── Body & layout ───────────────────────────────────────── */
+body {
+    background: var(--sa-bg);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+#sidebar {
+    background: linear-gradient(180deg, #1E3A8A 0%, #2563EB 100%);
+    min-width: var(--sa-sidebar-w);
+    max-width: var(--sa-sidebar-w);
+    border-right: none;
+    box-shadow: 2px 0 12px rgba(30,58,138,.22);
+}
+
+#sidebar h1 .logo {
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+#sidebar h1 .logo small {
+    color: var(--sa-blue-light);
+    font-size: 0.55em;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+#sidebar ul li a {
+    color: rgba(255,255,255,0.80);
+    border-bottom-color: rgba(255,255,255,0.07);
+    transition: color 0.15s, background 0.15s;
+}
+
+#sidebar ul li a:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.09);
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+#sidebar ul li.active > a {
+    background: rgba(96,165,250,0.20);
+    color: #fff;
+    border-left: 3px solid var(--sa-blue-light);
+    padding-left: 7px;
+    border-radius: 0 6px 6px 0;
+}
+
+/* Toggle button */
+#sidebar .custom-menu .btn.btn-primary {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.30);
+}
+#sidebar .custom-menu .btn.btn-primary:hover,
+#sidebar .custom-menu .btn.btn-primary:focus {
+    background: rgba(255,255,255,0.25) !important;
+    border-color: rgba(255,255,255,0.50) !important;
+}
+
+/* ── Content area ────────────────────────────────────────── */
+#content {
+    background: var(--sa-bg);
+    min-height: 100vh;
+}
+
+/* ── Cards (stat tiles) ──────────────────────────────────── */
+.sa-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(30,58,138,.10);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.sa-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(30,58,138,.18);
+}
+
+.sa-card-blue      { background: var(--sa-blue);       color: #fff; }
+.sa-card-blue-dk   { background: var(--sa-blue-dark);  color: #fff; }
+.sa-card-blue-lt   { background: #3b82f6;               color: #fff; }
+.sa-card-slate     { background: #475569;               color: #fff; }
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn-primary {
+    background-color: var(--sa-blue) !important;
+    border-color: var(--sa-blue) !important;
+    color: #fff !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #1d4ed8 !important;
+    border-color: #1d4ed8 !important;
+}
+.btn-outline-primary {
+    color: var(--sa-blue) !important;
+    border-color: var(--sa-blue) !important;
+}
+.btn-outline-primary:hover {
+    background-color: var(--sa-blue) !important;
+    border-color: var(--sa-blue) !important;
+    color: #fff !important;
+}
+
+/* ── Tables ──────────────────────────────────────────────── */
+.table thead.thead-light th {
+    background: #e2e8f0;
+    color: #1e3a8a;
+    border-color: #cbd5e1;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.table tbody tr:hover {
+    background: rgba(37,99,235,0.05);
+}
+
+/* ── Modals ──────────────────────────────────────────────── */
+.modal-header {
+    background: linear-gradient(135deg, #1E3A8A, #2563EB);
+    color: #fff;
+    border-radius: 6px 6px 0 0;
+}
+
+.modal-header .close {
+    color: #fff;
+    opacity: 0.8;
+    text-shadow: none;
+}
+.modal-header .close:hover { opacity: 1; }
+.modal-header a.close { color: #fff; text-decoration: none; }
+
+/* ── Page title ──────────────────────────────────────────── */
+#content h2 {
+    color: #1e3a8a;
+    font-weight: 700;
+}
+
+/* ── Badges ──────────────────────────────────────────────── */
+.badge-success  { background-color: #16a34a; }
+.badge-secondary{ background-color: #64748b; }
+.badge-info     { background-color: var(--sa-blue-light); }
+.badge-primary  { background-color: var(--sa-blue) !important; }
