@@ -51,16 +51,17 @@
 	/* ── AJAX search helper ───────────────────────────────── */
 	// Usage: ajaxSearch({ url, inputId, resultId, spinId })
 	window.ajaxSearch = function (opts) {
-		var $input  = $('#' + opts.inputId);
-		var $result = $('#' + opts.resultId);
-		var $spin   = opts.spinId ? $('#' + opts.spinId) : $([]);
+		var $input    = $('#' + opts.inputId);
+		var $result   = $('#' + opts.resultId);
+		var $spin     = opts.spinId ? $('#' + opts.spinId) : $([]);
+		var minLength = opts.minLength || 0;
 
-		function load(query) {
+		function load(query, page) {
 			$spin.removeClass('d-none');
 			$.ajax({
 				url:    opts.url,
 				method: 'POST',
-				data:   { query: query || '' },
+				data:   { query: query || '', page: page || 1 },
 				success: function (data) {
 					$result.html(data);
 				},
@@ -78,7 +79,15 @@
 		}
 
 		load();
-		$input.on('keyup input', function () { load($(this).val()); });
+		$input.on('keyup input', function () {
+			var val = $(this).val();
+			if (val.length > 0 && val.length < minLength) { return; }
+			load(val, 1);
+		});
+		$result.on('click', '.pago-page', function (e) {
+			e.preventDefault();
+			load($input.val(), $(this).data('page'));
+		});
 	};
 
 	/* ── Bootstrap 4 client-side validation ──────────────── */

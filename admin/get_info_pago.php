@@ -5,8 +5,8 @@ include __DIR__ . '/conexion/config.php';
 $output    = '';
 $clinic_id = Tenant::id();
 
-if (isset($_POST['query'])) {
-    $search = '%' . $_POST['query'] . '%';
+if (isset($_POST['query']) && trim($_POST['query']) !== '') {
+    $search = '%' . trim($_POST['query']) . '%';
     $stmt = $db->prepare(
         'SELECT * FROM pacientes WHERE clinic_id = ? AND cedula LIKE ?'
     );

@@ -60,6 +60,9 @@
 				<?php endif; ?>
 
 				<?php if (Auth::hasRole(['admin'])): ?>
+				<li class="<?= $__current === 'reportes.php' ? 'active' : '' ?>">
+					<a href="reportes.php"><span class="fa fa-bar-chart mr-3" aria-hidden="true"></span> Reportes</a>
+				</li>
 				<li class="<?= $__current === 'registro_user.php' ? 'active' : '' ?>">
 					<a href="registro_user.php"><span class="fa fa-users mr-3" aria-hidden="true"></span> Administradores</a>
 				</li>

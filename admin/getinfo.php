@@ -89,10 +89,10 @@ Auth::requireRole(['admin', 'recepcion']);
 
         </div>
     </div>
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=<?= filemtime(__DIR__ . '/js/main.js') ?>"></script>
     <script>
         $(function () {
-            ajaxSearch({ url: 'get_info_pago.php', inputId: 'ced', resultId: 'result', spinId: 'search-spin' });
+            ajaxSearch({ url: 'get_info_pago.php', inputId: 'ced', resultId: 'result', spinId: 'search-spin', minLength: 5 });
         });
     </script>
 </body>

@@ -25,6 +25,14 @@ Csrf::generate();
     <h1 class="display-4 fw-bold" style="color: #229b94;">Clisys</h1>
     <p class="text-muted">Sistema de gestión clínica</p>
   </div>
+  <?php if (isset($_GET['expired'])): ?>
+  <div class="container animated fadeIn" style="max-width:460px">
+    <div class="alert alert-warning text-center" role="alert">
+      <span class="fa fa-clock-o mr-2"></span>
+      Tu sesión expiró por inactividad. Inicia sesión nuevamente.
+    </div>
+  </div>
+  <?php endif; ?>
   <div class="container animated fadeIn delay-1s">
     <form method="POST" action="functions/login.php" data-validate>
       <?= Csrf::field() ?>
