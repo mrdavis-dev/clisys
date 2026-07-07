@@ -63,21 +63,12 @@ $pendientes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
 $fmt = fn(float $n): string => '$' . number_format($n, 2, '.', ',');
+$pageTitle = 'Reportes — ClíSys';
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes — ClíSys</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <?php include __DIR__ . '/partials/head.php'; ?>
     <style>
         .kpi-card { border: none; border-radius: 10px; color: #fff; padding: 1.25rem 1.5rem; }
         .kpi-card .kpi-label { font-size: .82rem; opacity: .85; text-transform: uppercase; letter-spacing: .05em; }
@@ -317,8 +308,6 @@ $fmt = fn(float $n): string => '$' . number_format($n, 2, '.', ',');
         </div>
 
     </div>
-</div>
-</div>
-<script src="js/main.js"></script>
+<?php include __DIR__ . '/partials/footer.php'; ?>
 </body>
 </html>

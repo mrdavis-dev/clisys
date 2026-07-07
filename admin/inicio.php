@@ -54,21 +54,12 @@ $stmt_week->execute();
 $stmt_week->bind_result($citas_semana);
 $stmt_week->fetch();
 $stmt_week->close();
+$pageTitle = 'Inicio — ClíSys';
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio — ClíSys</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <?php include __DIR__ . '/partials/head.php'; ?>
     <style>
         .stat-card {
             border: none;
@@ -288,9 +279,6 @@ $stmt_week->close();
         </div>
     </div>
 
-</div><!-- #content -->
-</div><!-- .wrapper -->
-
 <!-- ── Modal: Agregar paciente ─────────────────────────────── -->
 <div class="modal fade" id="modal-paciente" tabindex="-1" role="dialog" aria-labelledby="modal-paciente-title" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -479,6 +467,6 @@ $stmt_week->close();
 </div>
 
 <?php include __DIR__ . '/partials/confirm_modal.php'; ?>
-<script src="js/main.js"></script>
+<?php include __DIR__ . '/partials/footer.php'; ?>
 </body>
 </html>
