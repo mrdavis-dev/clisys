@@ -54,6 +54,9 @@ if ($result->num_rows > 0) {
     <td>' . h($row['telefono']) . '</td>
     <td>' . h($row['email']) . '</td>
     <td class="text-nowrap">
+      <a href="edit_paciente.php?id=' . $pid . '&tab=notas" class="btn btn-sm btn-primary mr-1">
+        <i class="fa fa-stethoscope"></i> Atender
+      </a>
       <a href="edit_paciente.php?id=' . $pid . '" class="btn btn-sm btn-success mr-1">
         <i class="fa fa-pencil"></i> Editar
       </a>

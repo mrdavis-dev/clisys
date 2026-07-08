@@ -18,14 +18,13 @@ if (isset($_POST['enviar'])) {
     $saldototal  = $saldo - $cantidad;
     $email       = $_POST['email']    ?? '';
     $tratamiento = $_POST['trata']    ?? '';
-    $nota        = $_POST['nota']     ?? '';
 
     $clinic_id = Tenant::id();
     $stmt = $db->prepare(
-        'INSERT INTO pago (clinic_id, fecha, nombre, cedula, monto, tipo_de_pago, saldo, tratamiento, nota)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        'INSERT INTO pago (clinic_id, fecha, nombre, cedula, monto, tipo_de_pago, saldo, tratamiento)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
     );
-    $stmt->bind_param('issssssss', $clinic_id, $fecha, $nombre, $cedula, $cantidad, $tipopago, $saldototal, $tratamiento, $nota);
+    $stmt->bind_param('isssssss', $clinic_id, $fecha, $nombre, $cedula, $cantidad, $tipopago, $saldototal, $tratamiento);
     $stmt->execute();
     $pago_id = (string)$db->insert_id;
     $stmt->close();

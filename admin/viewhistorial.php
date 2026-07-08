@@ -44,7 +44,7 @@ if ($result->num_rows > 0) {
     <tr>
     <td>Id</td><th>Fecha</th><th>Nombre</th><th>Cedula</th>
     <th>Cantidad pagada</th><th>Tipo de pago</th><th>Saldo</th>
-    <th>Tratamiento</th><th>Nota</th><th>Acciones</th>
+    <th>Tratamiento</th><th>Resumen</th><th>Acciones</th>
     </tr>';
     while ($row = $result->fetch_assoc()) {
         $output .= '<tr>
@@ -56,7 +56,7 @@ if ($result->num_rows > 0) {
     <td>' . h($row['tipo_de_pago']) . '</td>
     <td>B/. ' . h((string)$row['saldo']) . '</td>
     <td>' . h($row['tratamiento']) . '</td>
-    <td>' . h($row['nota']) . '</td>
+    <td><a class="btn btn-sm btn-outline-primary" href="edit_paciente.php?cedula=' . urlencode($row['cedula']) . '&tab=datos"><i class="fa fa-user"></i> Ver</a></td>
     <td><button type="button" class="btn btn-sm btn-warning"
       data-toggle="modal" data-target="#modalEditPago"
       data-id="'          . h((string)$row['id'])       . '"

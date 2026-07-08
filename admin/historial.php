@@ -34,13 +34,14 @@ $pageTitle = 'Historial — ClíSys';
           <div class="container-fluid">
 
     			<div id="result">
-
+              <p class="text-muted text-center mt-4">Escriba una cédula o nombre para ver el historial del paciente.</p>
     			</div>
 
 
           <script>
             $(function () {
-                ajaxSearch({ url: 'viewhistorial.php', inputId: 'search_text', resultId: 'result', spinId: 'search-spin' });
+                // No autoload on page open: avoids dumping every patient's payments in one flat table.
+                ajaxSearch({ url: 'viewhistorial.php', inputId: 'search_text', resultId: 'result', spinId: 'search-spin', minLength: 2, autoload: false });
             });
           </script>
 

@@ -214,7 +214,7 @@ include("menu.php");
 					<div class="col-3">
             <!--  -->
             <form action="">
-              <span  class="btn-block btn btn-primary align-middle shadow" >Buscar</span>
+              <span id="paciente_activo" class="btn-block btn btn-outline-secondary align-middle shadow">Sin paciente</span>
             </form>
 
 					</div>
@@ -222,7 +222,7 @@ include("menu.php");
             <!-- insert desordenado entre div -->
             <form name="frmImage" enctype="multipart/form-data" action="insert_odo.php" method="post">
             <?= Csrf::field() ?>
-						<input class="form-control border" type="text" name="search" id="search_text" placeholder="cédula">
+						<input class="form-control border" type="text" name="search" id="search_text" placeholder="Buscar por cédula" autocomplete="off">
 					</div>
 				</div>
 		</div>
@@ -232,7 +232,7 @@ include("menu.php");
         </div>
         <div class="container">
           <input class="btn btn-primary m-2" name="userImage" type="file">
-          <button class="btn btn-primary m-2" type="submit" name="submit">Guardar consulta</button>
+          <button class="btn btn-primary m-2" type="submit" name="submit" id="btn_guardar_consulta" disabled>Guardar consulta</button>
         </div>
 
       </form>
@@ -257,6 +257,12 @@ include("menu.php");
   success:function(data)
   {
     $('#result').html(data);
+    var found = data.indexOf('table-responsive') !== -1;
+    $('#btn_guardar_consulta').prop('disabled', !found);
+    $('#paciente_activo')
+      .text(found ? 'Paciente activo: ' + query : 'Sin paciente')
+      .toggleClass('btn-outline-secondary', !found)
+      .toggleClass('btn-success', found);
   }
   });
   }
@@ -269,6 +275,8 @@ include("menu.php");
   else
   {
   load_data();
+  $('#btn_guardar_consulta').prop('disabled', true);
+  $('#paciente_activo').text('Sin paciente').removeClass('btn-success').addClass('btn-outline-secondary');
   }
   });
   });

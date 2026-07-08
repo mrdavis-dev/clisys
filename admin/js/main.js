@@ -78,7 +78,7 @@
 			});
 		}
 
-		load();
+		if (opts.autoload !== false) { load(); }
 		$input.on('keyup input', function () {
 			var val = $(this).val();
 			if (val.length > 0 && val.length < minLength) { return; }

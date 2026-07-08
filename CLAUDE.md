@@ -21,6 +21,23 @@ npm install
 
 No build step, test suite, linter, or CI pipeline. Deploy directly to a PHP-enabled web server.
 
+### Local dev via Docker
+
+```bash
+docker compose up -d      # app on :8080, MySQL 8 on :3306
+```
+
+`docker/mysql/init/*.sql` auto-runs on first container start, in filename order — this is the authoritative schema source (not a top-level `migration_*.sql`, despite what README.md says):
+- `01_schema.sql` — full base schema (13 tables)
+- `02_superadmin.sql` — adds `role` enum + seeds the `superadmin` user
+- `03_superadmin_no_clinic.sql` — makes `users.clinic_id` nullable so superadmin isn't tied to a clinic
+
+To re-apply after schema changes, drop the `db_data` volume and recreate, or run the new `.sql` file manually against the running container.
+
+### Quick syntax check
+
+No linter is configured; `php -l <file>` is the fastest sanity check after editing a page (no framework autoloading to worry about beyond `admin/vendor/autoload.php`).
+
 ## Security layer (`admin/core/`)
 
 Six files bootstrap every request:
@@ -83,6 +100,8 @@ Six files bootstrap every request:
 - `get_info_pago.php` — patient lookup for payment form
 - `functions/funsaldo.php` — balance lookup
 
+All of these are wired up client-side through the shared `ajaxSearch()` helper in `admin/js/main.js`, not bespoke jQuery per page: `ajaxSearch({ url, inputId, resultId, spinId, minLength, autoload })`. It POSTs `{query, page}` on keyup and swaps `$result.html()`. `autoload` (default `true`) controls whether it fires once on page load with an empty query — most search-endpoint PHP files branch on empty `query` to return an unfiltered/paginated listing, so setting `autoload: false` is how a page avoids dumping the full table before the user searches.
+
 **Email** (`admin/insert_pagos_send.php`): PHPMailer via SMTP, credentials from `.env`.
 
 **PDF generation**: DOMPDF (`admin/insert_pagos_send.php`), invoices.
@@ -108,6 +127,16 @@ All clinic-scoped tables have `clinic_id INT NOT NULL`.
 | `users` | Staff accounts (bcrypt cost 12); role: admin/medico/recepcion/superadmin |
 | `clinic_notes` | Clinical notes per patient |
 | `audit_log` | Audit trail (clinic_id, user_id, action, entity, entity_id, ip) |
+
+## Plan tiers
+
+| Plan | Patients | Users | Price/mo |
+|---|---|---|---|
+| free | 50 | 2 | $0 |
+| basic | 500 | 10 | $29.99 |
+| pro | ∞ | ∞ | $79.99 |
+
+`Plan::withinLimit('patients'|'users')` is checked in patient/user creation handlers before insert.
 
 ## Query pattern
 

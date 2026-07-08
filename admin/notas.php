@@ -23,21 +23,31 @@ $pageTitle = 'Notas Clínicas — ClíSys';
         <h1 class="page-title border-bottom pb-2">Notas Clínicas</h1>
     </div>
 
-    <!-- Search + New note -->
+    <!-- Search: cedula takes you straight to the patient's full record (datos + pagos + notas) -->
     <div class="container-fluid mt-4">
-        <div class="row mb-3">
+        <form method="get" action="edit_paciente.php" class="row mb-3">
+            <input type="hidden" name="tab" value="notas">
             <div class="col-md-6">
-                <input type="text" id="search_cedula" class="form-control border"
-                       placeholder="Buscar por cédula del paciente" autocomplete="off">
+                <input type="text" name="cedula" class="form-control border"
+                       placeholder="Cédula del paciente — ver su historial y agregar nota" autocomplete="off" required>
             </div>
             <div class="col-md-3">
-                <button class="btn btn-primary w-100" data-toggle="modal" data-target="#modalNota">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fa fa-search mr-1"></i> Buscar paciente
+                </button>
+            </div>
+        </form>
+
+        <p class="text-muted">O agregar una nota rápida sin salir de esta página:</p>
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <button class="btn btn-outline-primary w-100" data-toggle="modal" data-target="#modalNota">
                     <i class="fa fa-plus mr-1"></i> Nueva nota
                 </button>
             </div>
         </div>
 
-        <!-- Notes table -->
+        <!-- Recent notes across all patients -->
         <div id="notas_result">
             <?php
             $clinic_id = Tenant::id();
@@ -68,9 +78,9 @@ $pageTitle = 'Notas Clínicas — ClíSys';
                 </thead>
                 <tbody>
                 <?php foreach ($rows as $n): ?>
-                    <tr class="fila-nota" data-cedula="<?= h($n['cedula']) ?>">
+                    <tr>
                         <td><?= h($n['fecha']) ?></td>
-                        <td><?= h($n['cedula']) ?></td>
+                        <td><a href="edit_paciente.php?cedula=<?= urlencode($n['cedula']) ?>&tab=notas"><?= h($n['cedula']) ?></a></td>
                         <td><?= h(mb_strimwidth($n['contenido'], 0, 80, '…')) ?></td>
                         <td><?= h($n['autor']) ?></td>
                         <td>
@@ -158,15 +168,6 @@ $pageTitle = 'Notas Clínicas — ClíSys';
 </div>
 
 <script>
-// Live search by cedula
-$('#search_cedula').on('input', function () {
-    var q = $(this).val().toLowerCase();
-    $('.fila-nota').each(function () {
-        var cedula = $(this).data('cedula').toLowerCase();
-        $(this).toggle(q === '' || cedula.includes(q));
-    });
-});
-
 // Populate "ver nota" modal
 $(document).on('click', '.btn-ver', function () {
     $('#modal_cedula').text($(this).data('cedula'));

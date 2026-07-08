@@ -75,11 +75,6 @@ $pageTitle = 'Pagos — ClíSys';
 
                                 <label for="">Cantidad a pagar B/:</label>
                                 <input type="text" required class="form-control border" autocomplete="off" name="cantidad">
-
-
-
-                                <label for="">Nota</label><br>
-                                <textarea class="w-100" name="nota" id="" cols="50" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="col-4" style="padding-top: 16%;">
