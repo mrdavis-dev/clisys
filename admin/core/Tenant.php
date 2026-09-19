@@ -20,7 +20,7 @@ class Tenant
      * Resolve and cache the clinic_id for this request.
      * Must be called after session_start() and after DB is available.
      */
-    public static function load(mysqli $db): void
+    public static function load(PdoMysqliCompat $db): void
     {
         // Superadmin has no clinic — skip resolution entirely
         if (($_SESSION['role'] ?? '') === 'superadmin') {

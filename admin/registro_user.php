@@ -57,7 +57,7 @@ $pageTitle = 'Administradores — ClíSys';
             $stmt_users->execute();
             $result = $stmt_users->get_result();
 
-            $count = mysqli_num_rows($result);
+            $count = $result->num_rows;
             ?>
 
             <td>
